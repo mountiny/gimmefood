@@ -1,0 +1,22 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Ryba a la creme",
+      "date": "2019-05-30T17:30:31.098Z",
+      "price": "30"
+    },
+    {
+      "id": 2,
+      "name": "Ratatuille",
+      "date": "2019-05-30T18:39:34.091Z",
+      "price": "32"
+    },
+    {
+      "id": 3,
+      "name": "Rosmary chicken",
+      "date": "2020-04-17T08:53:33.845Z",
+      "price": "45"
+    }
+  ]
+}
