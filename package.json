@@ -6,7 +6,9 @@
     "build": "webpack --mode=production",
     "start": "webpack-dev-server --mode=development",
     "server": "json-server -p3001 --watch db.json",
-    "eslint": "eslint ."
+    "eslint": "eslint .",
+    "git": "git add . && git commit -m",
+    "postgit": "git push origin master"
   },
   "license": "MIT",
   "devDependencies": {
