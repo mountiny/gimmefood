@@ -1,22 +1,54 @@
 {
-  "products": [
+  "users": [
     {
       "id": 1,
-      "name": "Ryba a la creme",
-      "date": "2019-05-30T17:30:31.098Z",
-      "price": "30"
+      "username": "mikllhor",
+      "name": "Vit Horacek",
+      "password": "heslo"
+    }
+  ],
+  "categories": [
+    {
+      "name": "Breads",
+      "hidden": false,
+      "order": 1
     },
     {
-      "id": 2,
-      "name": "Ratatuille",
-      "date": "2019-05-30T18:39:34.091Z",
-      "price": "32"
+      "name": "Others",
+      "hidden": false,
+      "order": 2
+    }
+  ],
+  "products": [
+    {
+      "name": "Sourdough Bread",
+      "description": "Woodfire oven baked crispy bread",
+      "price": 3.99,
+      "stock": 30,
+      "hidden": false,
+      "order": 1,
+      "allergens": [2,4],
+      "categories": "asda"
     },
     {
-      "id": 3,
-      "name": "Rosmary chicken",
-      "date": "2020-04-17T08:53:33.845Z",
-      "price": "45"
+      "name": "Italian Baguette",
+      "description": "Woodfire oven baked crispy baguette",
+      "price": 1.99,
+      "stock": 34,
+      "hidden": false,
+      "order": 2,
+      "allergens": [2,5],
+      "categories": "asda"
+    },
+    {
+      "name": "Foccacia a la cloud",
+      "description": "Pillow like baked good",
+      "price": 2.99,
+      "stock": 29,
+      "hidden": false,
+      "order": 3,
+      "allergens": [1,4],
+      "categories": "asda"
     }
   ]
 }

@@ -8,7 +8,7 @@ const config = (env, argv) => {
 
   const backend_url = argv.mode === 'production'
     ? 'https://shrouded-atoll-37097.herokuapp.com/api/notes'
-    : 'http://localhost:3001/notes'
+    : 'http://localhost:3001/products'
 
   return {
     entry: ['@babel/polyfill', './src/index.js'],
