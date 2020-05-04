@@ -1,5 +1,8 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/testing/reset'
+// const baseUrl = 'http://localhost:3001/api/testing/reset'
+const url = 'testing/reset'
+
+const baseUrl = `${BACKEND_URL}${url}`
 
 // let token = null
 

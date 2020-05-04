@@ -25,7 +25,7 @@ const Product = ({name, price, picture, description, max, onPictureClick, onItem
   }
 
   return (
-    <div className={counter.value !== 0 ? "product-block h-rounded h-selected" : "product-block h-rounded"}>
+    <div className={counter.value !== 0 ? "product-block h-block h-rounded h-selected" : "product-block h-block h-rounded"}>
       <div className="product-block__left h-pointer" onClick={() => onPictureClick(picture)}>
         <img src={IMAGES + picture} alt="" className="product-img h-rounded"/>
       </div>
@@ -37,7 +37,10 @@ const Product = ({name, price, picture, description, max, onPictureClick, onItem
         className={(counter.value === 0) ? "product-block__right h-rounded h-pointer"  : "product-block__right h-rounded" }
         onClick={() => handleFirstAddition()}>
         <div className="product-price">£{price}</div>
-        <div className={(counter.value === 0) ? "product-counter unselected" : "product-counter"}>
+        <div className={counter.value === 0 ? "product-add" : "product-add h-display-none"}>ADD</div>
+      
+      </div>
+      <div className="product-counter__line">
           <div 
             className="product-minus product-counter__controls"
             onClick={() => {counter.decrease(); removeItem();}}>
@@ -51,7 +54,6 @@ const Product = ({name, price, picture, description, max, onPictureClick, onItem
             onClick={() => {counter.increase(); addItem();}}>
             +
           </div>
-        </div>
       </div>
     </div>
   )

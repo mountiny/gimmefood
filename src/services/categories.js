@@ -1,5 +1,8 @@
 import axios from 'axios'
-const baseUrl = 'http://localhost:3001/api/categories'
+// const baseUrl = 'http://localhost:3001/api/categories'
+const url = 'categories'
+
+const baseUrl = `${BACKEND_URL}${url}`
 
 let token = null
 
@@ -13,6 +16,11 @@ const getAll = () => {
   return request.then(response => response.data)
 }
 
+const getAllByParams = (params) => {
+  const request = axios.get(baseUrl, {params: params})
+  return request.then(response => response.data)
+}
+
 const create = async newObject => {
   console.log("token: ", token)
   const config = {
@@ -21,15 +29,30 @@ const create = async newObject => {
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
+const delete_category = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+    data: {
+      cat_id: id,
+    }
+  }
+  const response = await axios.delete(baseUrl, config)
+  return response.data
+}
 
-const update = (id, newObject) => {
-  const request = axios.put(`${baseUrl}/${id}`, newObject)
+const update = (newObject) => {
+  const config = {
+    headers: { Authorization: token }
+  }
+  const request = axios.put(baseUrl, newObject, config)
   return request.then(response => response.data)
 }
 
 export default {
   getAll,
+  getAllByParams,
   create,
+  delete_category,
   update,
   setToken
 }

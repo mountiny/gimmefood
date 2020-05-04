@@ -2,6 +2,11 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import PromisePolyfill from 'promise-polyfill'
+import {
+  BrowserRouter as Router
+} from "react-router-dom"
+
+
 
 async function loadPolyfills() {
   if (typeof window.IntersectionObserver === 'undefined') {
@@ -15,4 +20,17 @@ if (!window.Promise) {
   window.Promise = PromisePolyfill
 }
 
-ReactDOM.render(<App />, document.getElementById('root'))
+const loggedUserJSON = window.localStorage.getItem('loggedBonTakeoutUser')
+let user = null
+if (loggedUserJSON) {
+  user = JSON.parse(loggedUserJSON)
+}
+console.log('Local storage user:', user)
+
+
+
+ReactDOM.render(
+  <Router>
+      <App LSUser={user}/>
+  </Router>, 
+  document.getElementById('root'))

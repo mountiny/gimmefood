@@ -7,18 +7,20 @@ const copyWebpackPlugin = require('copy-webpack-plugin')
 const config = (env, argv) => {
 
   const backend_url = argv.mode === 'production'
-    ? 'https://shrouded-atoll-37097.herokuapp.com/api/notes'
-    : 'http://localhost:3001/products'
+    ? 'https://shrouded-atoll-37097.herokuapp.com/api/'
+    : 'http://localhost:3001/api/'
 
   return {
     entry: ['@babel/polyfill', './src/index.js'],
     output: {
       path: path.resolve(__dirname, 'build'),
-      filename: 'main.js'
+      filename: 'main.js',
+      publicPath: '/'
     },
     devServer: {
       contentBase: path.resolve(__dirname, 'build'),
       compress: true,
+      historyApiFallback: true,
       port: 3000,
     },
     devtool: 'source-map',
