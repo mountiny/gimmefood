@@ -1,4 +1,5 @@
 import axios from 'axios'
+const qs = require('qs')
 const url = 'products'
 
 const baseUrl = `${BACKEND_URL}${url}`
@@ -15,8 +16,15 @@ const getAll = () => {
 }
 
 const create = async newObject => {
+  console.log('Create new product: ', newObject)
+  for (var pair of newObject.entries()) {
+    console.log(pair[0]+ ', ' + pair[1]); 
+  }
   const config = {
-    headers: { Authorization: token },
+    headers: { 
+      'content-type': 'multipart/form-data',
+      Authorization: token
+    }
   }
   const response = await axios.post(baseUrl, newObject, config)
   return response.data
@@ -29,7 +37,10 @@ const create = async newObject => {
 
 const update = (newObject) => {
   const config = {
-    headers: { Authorization: token }
+    headers: { 
+      Authorization: token, 
+      'content-type': 'multipart/form-data' 
+    }
   }
   const request = axios.put(baseUrl, newObject, config)
   return request.then(response => response.data)

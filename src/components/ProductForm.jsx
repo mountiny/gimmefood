@@ -1,8 +1,4 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
-
-// Hooks
-import useField from '../hooks/fieldHook'
 
 const ProductForm = ({ 
   handleSubmit,
@@ -12,6 +8,7 @@ const ProductForm = ({
   handlePriceChange,
   handleStockChange,
   handleAllergensChange,
+  handleImageChange,
   handleActiveChange,
   product_name,
   product_description_short,
@@ -19,6 +16,7 @@ const ProductForm = ({
   product_price,
   product_stock,
   product_allergens,
+  product_image,
   active,
   onCloseEdit
 }) => {
@@ -112,6 +110,17 @@ const ProductForm = ({
             placeholder="(eg. 1-4-5) not required"
             value={product_allergens}
             onChange={handleAllergensChange}
+          />
+        </div>
+        <div className="form-line image-upload__line">
+
+          <label htmlFor="product_image">Upload an image of this product:</label>
+          <input
+            id="product_image"
+            className="h-rounded"
+            type="file"
+            value={product_image}
+            onChange={handleImageChange}
           />
         </div>
         <button 

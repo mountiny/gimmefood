@@ -97,7 +97,18 @@ const CategoryBlock = ({
       {(category.products.length !== 0) ? 
         category.products.map((prod, j) => {
 
-          if (showingActive === !prod.hidden) {
+          if (category.hidden && !showingActive) {
+            return (
+              <AdminProductBlock 
+                key={j} 
+                className="admin-block h-rounded h-block admin-product__block" 
+                product={prod}
+                category={category}
+                onEditProduct={(el) => onEditProduct(el)}
+                onDeleteProduct={(el) => onDeleteProduct(el)}
+              />
+              )
+          } else if (showingActive === !prod.hidden) {
 
             return (
               <AdminProductBlock 

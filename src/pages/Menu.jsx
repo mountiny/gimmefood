@@ -68,6 +68,7 @@ const Menu = ({user}) => {
     categoriesService
     .getAllByParams(params)
     .then(cats => {
+      console.log('Users categories: ', cats)
       setCategories(cats)
     })
   }
@@ -104,7 +105,6 @@ const Menu = ({user}) => {
     try {
 
       const response = await productService.create(newProduct)
-
 
       const new_categories = categories.map((cat, i) => {
         if (cat.id === newProduct.cat_id) {
@@ -319,6 +319,7 @@ const Menu = ({user}) => {
                     console.log('Active ', categories)
 
                     if (!cat.hidden === showActive) {
+
                       return (
                         <CategoryBlock
                           className=""
@@ -330,8 +331,9 @@ const Menu = ({user}) => {
                           onEditProduct={(el) => handleEditProduct(el)}
                           onDeleteCategory={(el) => handleDeleteCategory(el)}
                           onEditCategory={(el) => handleEditCategory(el)}
-                         />
+                          />
                         )
+                  
                       } else if (!showActive && cat.products.some((prod)=> prod.hidden === !showActive)) {
                         return (
                           <CategoryBlock

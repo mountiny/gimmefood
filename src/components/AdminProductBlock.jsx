@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IMAGES } from '../config'
+import { IMAGES, UPLOADS } from '../config'
 
 // Components
 import ProductForm from './ProductForm.jsx'
@@ -7,6 +7,7 @@ import ProductForm from './ProductForm.jsx'
 // Hooks
 import useCounter from '../hooks/counterHook'
 import useField from '../hooks/fieldHook'
+import useImageField from '../hooks/imageFieldHook'
 
 
 const AdminProductBlock = ({className, product, category, onEditProduct, onDeleteProduct}) => {
@@ -20,6 +21,7 @@ const AdminProductBlock = ({className, product, category, onEditProduct, onDelet
   const product_price = useField("product_price", parseFloat(product.price/100).toFixed(2))
   const product_stock = useField("product_stock", product.stock)
   const product_allergens= useField("product_allergens", (product.allergens[0]) ? product.allergens.join('-') : '')
+  const product_image = useImageField("product_image")
 
   const [active, setActive] = useState(!product.hidden)
 
@@ -85,6 +87,8 @@ const AdminProductBlock = ({className, product, category, onEditProduct, onDelet
 
   }
 
+  console.log('Product Image: ', product.image)
+
   return (
     <div 
       data-product={product.id} 
@@ -99,6 +103,7 @@ const AdminProductBlock = ({className, product, category, onEditProduct, onDelet
           handlePriceChange={(e) => product_price.onChange(e)}
           handleStockChange={(e) => product_stock.onChange(e)}
           handleAllergensChange={(e) => product_allergens.onChange(e)}
+          handleImageChange={(e) => product_image.onChange(e)}
           handleActiveChange={()=>setActive(!active)}
           product_name={product_name.value}
           product_description_short={product_description_short.value}
@@ -106,12 +111,17 @@ const AdminProductBlock = ({className, product, category, onEditProduct, onDelet
           product_price={product_price.value}
           product_stock={product_stock.value}
           product_allergens={product_allergens.value}
+          product_image={product_image.value}
           active={active}
           onCloseEdit={() =>closeEdit()}
         />
         : 
         <div className="admin-product__inner h-presented">
           <div className="admin-product__name">{product.name}</div>
+          {(product.image) && (<div className="admin-product__image">
+            <img src={UPLOADS + product.image} alt=""/>
+          </div>)}
+          
           <div className="admin-block__actions">
             <button className="admin-product__btn h-btn-padding h-button h-rounded admin-product__edit" onClick={editProduct}>Edit</button>
             <button className="admin-product__btn h-btn-padding h-button h-rounded admin-product__delete" onClick={deleteProduct}>Delete</button>

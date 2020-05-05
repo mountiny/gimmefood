@@ -4,6 +4,7 @@ import { IMAGES } from '../config'
 // Hooks
 import useCounter from '../hooks/counterHook'
 import useField from '../hooks/fieldHook'
+import useImageField from '../hooks/imageFieldHook'
 
 const AdminNewProductBlock = ({className, category, onAddProduct}) => {
   // const counter = useCounter(max || 30)
@@ -16,6 +17,7 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
   const product_price = useField("product_price", 3.99)
   const product_stock = useField("product_stock", 30)
   const product_allergens= useField("product_allergens")
+  const product_image = useImageField("product_image")
 
   const [active, setActive] = useState(false)
   
@@ -49,20 +51,36 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
       alert("Given long description is too long. Maximum is 400 characters.")
       return
     }
-
+    console.log('Image value: ', product_image.value)
     const allergens = (product_allergens.value === '') ? [null] : product_allergens.value.split("-")
     
-    const newProduct = {
-      name: product_name.value,
-      description_short: product_description_short.value,
-      description_long: product_description_long.value,
-      price: parseFloat(product_price.value).toFixed(2),
-      stock: parseInt(product_stock.value),
-      hidden: !active,
-      order: category.products.length + 1,
-      allergens: allergens,
-      cat_id: category.id
+    var newProduct = new FormData()
+    newProduct.append('name',  product_name.value)
+    newProduct.append('description_short',  product_description_short.value)
+    newProduct.append('description_long',  product_description_long.value)
+    newProduct.append('price',   parseFloat(product_price.value).toFixed(2))
+    newProduct.append('stock',  parseInt(product_stock.value))
+    newProduct.append('hidden',  !active)
+    newProduct.append('order',  category.products.length + 1)
+    newProduct.append('allergens',  allergens)
+    newProduct.append('image',  product_image.value)
+    newProduct.append('cat_id',  category.id)
+    // console.log('Form data: ', newProduct)
+    for (var pair of newProduct.entries()) {
+      console.log(pair[0]+ ', ' + pair[1]); 
     }
+    // const newProduct = {
+    //   name: product_name.value,
+    //   description_short: product_description_short.value,
+    //   description_long: product_description_long.value,
+    //   price: parseFloat(product_price.value).toFixed(2),
+    //   stock: parseInt(product_stock.value),
+    //   hidden: !active,
+    //   order: category.products.length + 1,
+    //   allergens: allergens,
+    //   image: product_image.value,
+    //   cat_id: category.id
+    // }
 
     product_name.value = ''
     product_description_short.value = ''
@@ -70,6 +88,7 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
     product_price.value = ''
     product_stock.value = ''
     product_allergens.value = ''
+    product_image.value = ''
 
     setActive(false)
 
@@ -79,6 +98,11 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
 
   const closeEdit = () => {
     setOpen(false)
+  }
+
+  const handleFileChange = e => {
+    pr
+   
   }
 
   return (
@@ -168,6 +192,17 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
                 onChange={(e) => product_allergens.onChange(e)}
               />
             </div>
+            <div className="form-line image-upload__line">
+
+              <label htmlFor="product_image">Upload an image of this product:</label>
+              <input
+                id="product_image"
+                className="h-rounded"
+                type="file"
+                // value={product_image.value}
+                onChange={(e) => product_image.onChange(e)}
+              />
+              </div>
             <button 
               className="h-full-btn h-button h-rounded h-pointer" 
               type="submit">
