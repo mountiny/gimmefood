@@ -44,6 +44,14 @@ const ProductForm = ({
   }
 
   const imageToUpload = e => {
+    const size = e.target.files[0].size;
+    if (size > 2000000) {
+      e.preventDefault()
+      e.stopPropagation()
+      alert('The image limit si 2MB. Please, upload smaller image.')
+      return;
+    }
+    console.log('Image size: ', size)
     setImageName(e.target.value.split( '\\' ).pop())
     setUploadedImage(URL.createObjectURL(e.target.files[0]))
     handleImageChange(e)
@@ -147,6 +155,7 @@ const ProductForm = ({
               id="product_image"
               className="h-rounded"
               type="file"
+              accept=".gif,.jpg,.jpeg,.png,.heic"
               onChange={imageToUpload}
             />
             <label className='h-rounded' htmlFor="product_image">
