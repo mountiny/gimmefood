@@ -153,6 +153,7 @@ const AdminProductBlock = ({
           product_allergens={product_allergens.value}
           product_image={product_image.value}
           deleteImage={() => deleteImage()}
+          showPictureModal={(product) => onPictureClick(product)}
           active={active}
           onCloseEdit={() =>closeEdit()}
         />
@@ -170,8 +171,8 @@ const AdminProductBlock = ({
             </div>)}
             
             <div className="admin-block__actions">
-              <button className="admin-product__btn h-btn-padding h-button h-rounded admin-product__edit" onClick={editProduct}>Edit</button>
-              <button className="admin-product__btn h-btn-padding h-button h-rounded admin-product__delete" onClick={deleteProduct}>Delete</button>
+              <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__edit" onClick={editProduct}>Edit</button>
+              <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__delete" onClick={deleteProduct}>Delete</button>
             </div>
           </div>
           

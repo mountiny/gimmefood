@@ -8,7 +8,7 @@ import useCounter from '../hooks/counterHook'
 import useField from '../hooks/fieldHook'
 import useImageField from '../hooks/imageFieldHook'
 
-const AdminNewProductBlock = ({className, category, onAddProduct}) => {
+const AdminNewProductBlock = ({className, category, onAddProduct, onPictureClick}) => {
   // const counter = useCounter(max || 30)
 
   const [open, setOpen] = useState(false)
@@ -137,6 +137,7 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
             product_allergens={product_allergens.value}
             product_image={product_image.value}
             deleteImage={() => deleteImage()}
+            showPictureModal={(product) => onPictureClick(product)}
             active={active}
             onCloseEdit={() => closeEdit()}
           /> 

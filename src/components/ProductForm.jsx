@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
 
+// Components
+import PictureModal from './PictureModal.jsx'
+
 const ProductForm = ({
   product,
   handleSubmit,
@@ -19,6 +22,7 @@ const ProductForm = ({
   product_allergens,
   product_image,
   deleteImage,
+  showPictureModal,
   active,
   onCloseEdit
 }) => {
@@ -157,7 +161,12 @@ const ProductForm = ({
           </div>
         </div>
         {(imageName !== '') && (<div className="admin-product__image">
-          <img className='product-img h-rounded h-pointer' src={(uploadedImage)? uploadedImage : `${STATIC}${imageName}`} alt=""/>
+          <img 
+            className='product-img h-rounded h-pointer' 
+            src={(uploadedImage)? uploadedImage : `${STATIC}${imageName}`} 
+            alt={product_name}
+            onClick={() => showPictureModal((uploadedImage)? uploadedImage : `${STATIC}${imageName}`)}
+          />
         </div>)}
         <button 
           className="h-full-btn h-button h-rounded h-pointer" 

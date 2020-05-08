@@ -58,14 +58,15 @@ const CategoryBlock = ({
     <div className="admin-products__cont" data-category={category.id}>
       {(open) ?
        <div className="admin-category__edit">
-          <form onSubmit={saveCategory}>
-            <div className="form-line">
-              <div className="admin-block__active">
-                <div className={active ? "order-selector h-pointer h-rounded selected" : "order-selector h-pointer h-rounded"}
-                onClick={()=>setActive(!active)}></div>
-                <div className="admin-block__active-label">Active</div>
-              </div>
+          <div className="admin-block__close-wrapper">
+            <div className="admin-block__active">
+              <div className={active ? "order-selector h-pointer h-rounded selected" : "order-selector h-pointer h-rounded"}
+              onClick={()=>setActive(!active)}></div>
+              <div className="admin-block__active-label">Active</div>
             </div>
+            <button className="h-btn-padding h-button h-pointer h-rounded" onClick={()=>{if (open) closeEdit()}}>Close</button>
+          </div>
+          <form onSubmit={saveCategory}>
             <div className="form-line">
               <input
                 id="category_name"
@@ -89,8 +90,8 @@ const CategoryBlock = ({
             <h3 className="page-subheading">{category.name}</h3>
           </div>
           <div className="admin-block__actions">
-            <button className="admin-block__actions h-rounded h-button h-btn-padding admin-product__edit" onClick={() => editCategory()}>Edit</button>
-            <button className="admin-block__actions h-rounded h-button h-btn-padding admin-product__delete" onClick={() => deleteCategory()}>Delete</button>
+            <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__edit" onClick={() => editCategory()}>Edit</button>
+            <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__delete" onClick={() => deleteCategory()}>Delete</button>
           </div>
         </div>
        }
@@ -133,10 +134,12 @@ const CategoryBlock = ({
       </div>
       }
       <AdminNewProductBlock 
-          categoryName={category.name} 
-          category={category} 
-          onAddProduct={(newProduct, data) => onAddProduct(newProduct, data)}
-          className="admin-block h-text-center h-700 h-pointer h-rounded h-block admin-product__block admin-product__new" />
+        categoryName={category.name} 
+        category={category} 
+        onAddProduct={(newProduct, data) => onAddProduct(newProduct, data)}
+        className="admin-block h-text-center h-700 h-pointer h-rounded h-block admin-product__block admin-product__new"
+        onPictureClick={(el) => onPictureClick(el)}
+      />
 
 
     </div>

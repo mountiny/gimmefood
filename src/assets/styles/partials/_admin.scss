@@ -250,7 +250,11 @@ $admin-height: 76px;
   max-width: 80px;
   position: relative;
   margin-right: $pad;
+  @media screen and (max-width: $mobile-x) {
+    display: none;
+  }
 }
+
 .admin-product__right {
 
   @include display_flexbox();
@@ -269,6 +273,9 @@ $admin-height: 76px;
   @include display_flexbox();
   @include justify-content(flex-end);
   @include align-items(center);
+}
+.admin-action__btn {
+  margin-left: $pad/2;
 }
 .admin-menu__active-wrapper {
   position: relative;

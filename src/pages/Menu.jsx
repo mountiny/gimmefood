@@ -354,13 +354,21 @@ const Menu = ({user}) => {
                 onClick={()=>{if (!newCategory) setNewCategory(true)}}>
                 {newCategory ? 
                   <div>
-                     <div className="form-line">
+                    <div className="admin-block__close-wrapper">
                       <div className="admin-block__active">
                         <div className={newCategoryActive ? "order-selector h-pointer h-rounded selected" : "order-selector h-pointer h-rounded"}
                         onClick={()=>setNewCategoryActive(!newCategoryActive)}></div>
                         <div className="admin-block__active-label">Active</div>
                       </div>
+                      <button className="h-btn-padding h-button h-pointer h-rounded" onClick={()=>{if (newCategory) setNewCategory(false)}}>Close</button>
                     </div>
+                     {/* <div className="form-line">
+                      <div className="admin-block__active">
+                        <div className={newCategoryActive ? "order-selector h-pointer h-rounded selected" : "order-selector h-pointer h-rounded"}
+                        onClick={()=>setNewCategoryActive(!newCategoryActive)}></div>
+                        <div className="admin-block__active-label">Active</div>
+                      </div>
+                    </div> */}
                   
                     <form onSubmit={createNewCategory}>
                       <div className="form-line">
