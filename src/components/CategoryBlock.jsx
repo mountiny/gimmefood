@@ -1,11 +1,11 @@
 
 import React, { useState, useEffect, useRef } from 'react'
-import { IMAGES } from '../config'
+import arrayMove from 'array-move';
 
 // Components
-
 import AdminProductBlock from './AdminProductBlock.jsx'
 import AdminNewProductBlock from './AdminNewProductBlock.jsx'
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
 // Hooks
 import useCounter from '../hooks/counterHook'
@@ -28,6 +28,13 @@ const CategoryBlock = ({
   const [active, setActive] = useState(!category.hidden)
 
   const category_name = useField("product_name", category.name)
+
+
+  const SortableItem = SortableElement(({children}) => <div>{children}</div>);
+
+  const SortableList = SortableContainer(({children}) => {
+    return <div>{children}</div>;
+  });
 
   const editCategory = () => {
     if (!open) setOpen(true)
@@ -52,6 +59,13 @@ const CategoryBlock = ({
     onEditCategory(newCategory)
     setOpen(false)
   }
+
+  const handleOnSortEnd = ({oldIndex, newIndex}) => {
+    const reorderedProducts = arrayMove(category.products, oldIndex, newIndex)
+
+    const newCategory = {...category, products: reorderedProducts}
+    onEditCategory(newCategory)
+  };
 
 
   return (
@@ -95,39 +109,50 @@ const CategoryBlock = ({
           </div>
         </div>
        }
-
+      {/* <SortableList onSortEnd={onSortEnd}> */}
       {(category.products.length !== 0) ? 
-        category.products.map((prod, j) => {
+        <SortableList onSortEnd={handleOnSortEnd} useDragHandle>
+        {category.products.map((prod, j) => {
 
           if (category.hidden && !showingActive) {
             return (
-              <AdminProductBlock 
-                key={j} 
-                className="admin-block h-rounded h-block admin-product__block" 
-                product={prod}
-                category={category}
-                onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
-                onDeleteProduct={(el) => onDeleteProduct(el)}
-                onPictureClick={(el) => onPictureClick(el)}
-              />
+              <SortableItem 
+                key={`item-${prod.id}`} 
+                product={prod.id}
+                index={j}>
+                <AdminProductBlock 
+                  key={j} 
+                  className="admin-block h-block h-rounded admin-product__block" 
+                  product={prod}
+                  category={category}
+                  onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
+                  onDeleteProduct={(el) => onDeleteProduct(el)}
+                  onPictureClick={(el) => onPictureClick(el)}
+                />
+              </SortableItem>
               )
           } else if (showingActive === !prod.hidden) {
 
             return (
-              <AdminProductBlock 
-                key={j} 
-                className="admin-block h-rounded h-block admin-product__block" 
-                product={prod}
-                category={category}
-                onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
-                onDeleteProduct={(el) => onDeleteProduct(el)}
-                onPictureClick={(el) => onPictureClick(el)}
-              />
+              <SortableItem 
+                key={`item-${prod.id}`} 
+                index={j}>
+                <AdminProductBlock 
+                  key={j} 
+                  className="admin-block h-block h-rounded admin-product__block" 
+                  product={prod}
+                  category={category}
+                  onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
+                  onDeleteProduct={(el) => onDeleteProduct(el)}
+                  onPictureClick={(el) => onPictureClick(el)}
+                />
+              </SortableItem>
               )
           }
           
 
-        })
+        })}
+        </SortableList>
       : 
       <div className="">
         <h4 className="admin-category__heading">You have not added any {showingActive ? "active" : "inactive"} product to this category yet.</h4>

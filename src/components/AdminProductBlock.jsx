@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 
 // Components
 import ProductForm from './ProductForm.jsx'
+import {SortableHandle} from 'react-sortable-hoc';
 
 // Hooks
 import useCounter from '../hooks/counterHook'
@@ -35,6 +36,8 @@ const AdminProductBlock = ({
 
   const [active, setActive] = useState(!product.hidden)
   // const [productImageKey, setProductImageKey] = useState(Date.now())
+
+  const DragHandle = SortableHandle(() => <div className="admin-block__handle h-pointer">::</div>)
 
   const editProduct = () => {
     if (!open) setOpen(true)
@@ -159,20 +162,23 @@ const AdminProductBlock = ({
         />
         : 
         <div className="admin-product__inner h-presented">
-          <div className="admin-product__name">{product.name}</div>
+          <DragHandle />
+          <div className="admin-product__content">
+            <div className="admin-product__name">{product.name}</div>
 
-          <div className="admin-product__right">
-            {(product.image) && (<div className="admin-product__image">
-              <img 
-                className='product-img h-rounded h-pointer' 
-                src={STATIC + product.image} 
-                alt={product.name}
-                onClick={() => onPictureClick(product)}/>
-            </div>)}
-            
-            <div className="admin-block__actions">
-              <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__edit" onClick={editProduct}>Edit</button>
-              <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__delete" onClick={deleteProduct}>Delete</button>
+            <div className="admin-product__right">
+              {(product.image) && (<div className="admin-product__image">
+                <img 
+                  className='product-img h-rounded h-pointer' 
+                  src={STATIC + product.image} 
+                  alt={product.name}
+                  onClick={() => onPictureClick(product)}/>
+              </div>)}
+              
+              <div className="admin-block__actions">
+                <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__edit" onClick={editProduct}>Edit</button>
+                <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__delete" onClick={deleteProduct}>Delete</button>
+              </div>
             </div>
           </div>
           
