@@ -246,6 +246,10 @@ $admin-height: 76px;
 .admin-block__active-label {
   margin-left: $pad;
 }
+.admin-product__image {
+  max-width: 80px;
+  position: relative;
+}
 .admin-category__heading {
 
   @include display_flexbox();

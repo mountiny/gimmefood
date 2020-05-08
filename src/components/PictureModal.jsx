@@ -6,12 +6,14 @@ const PictureModal = ({picture, product, onClose}) => {
 
   useLockBodyScroll()
 
+  console.log('Prodcut in modal: ', product)
+
   return (
     <div className="picture-modal modal">
-      <img className="h-rounded" src={IMAGES + picture} alt="Product image" />
+      <img className="h-rounded" src={STATIC + product.image} alt="Product image" />
       <div className="picture-modal__description">
         <div className="picture-desctription__long">
-          {product.description}
+          {product.description_long}
         </div>
         <div className="picture-description__allergens h-700">
           A-{product.allergens.join("-")}

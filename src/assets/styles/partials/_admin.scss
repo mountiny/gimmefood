@@ -246,6 +246,17 @@ $admin-height: 76px;
 .admin-block__active-label {
   margin-left: $pad;
 }
+.admin-product__image {
+  max-width: 80px;
+  position: relative;
+  margin-right: $pad;
+}
+.admin-product__right {
+
+  @include display_flexbox();
+  @include justify-content(flex-end);
+  @include align-items(center);
+}
 .admin-category__heading {
 
   @include display_flexbox();
@@ -286,6 +297,24 @@ $admin-height: 76px;
   }
   &:hover {
     background-color: $bgLightHover;
+  }
+}
+.admin-image__upload {
+  // @include display_flexbox();
+  // @include justify-content(space-between);
+  // @include align-items(center);
+  display: grid;
+  grid-template-columns: 80% auto;
+  column-gap: $pad;
+  &.admin-delete__option {
+    grid-template-columns: 100%;
+  }
+}
+.admin-delete__image  {
+  margin-bottom: $pad;
+  font-size: 1rem;
+  &:hover {
+    background-color: $no;
   }
 }
 

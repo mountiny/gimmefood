@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IMAGES } from '../config'
+
+// Components
+import ProductForm from './ProductForm.jsx'
 
 // Hooks
 import useCounter from '../hooks/counterHook'
@@ -17,7 +19,7 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
   const product_price = useField("product_price", 3.99)
   const product_stock = useField("product_stock", 30)
   const product_allergens= useField("product_allergens")
-  const product_image = useImageField("product_image")
+  const product_image = useImageField("product_image", '')
 
   const [active, setActive] = useState(false)
   
@@ -34,9 +36,6 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
       alert("Given product price is invalid. Please, enter the price in following format with two decimal places: eg. 9.00 or 3.99!")
       return
     }
-    console.log('Stock values: ', typeof(parseInt(product_stock.value)))
-
-    console.log('Category in createNew product: ', category)
 
     if (parseInt(product_stock.value) <= -1) {
       alert("Given stock amount is not valid. Enter -1 for unlimited or some integer larger than -1.")
@@ -51,37 +50,37 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
       alert("Given long description is too long. Maximum is 400 characters.")
       return
     }
-    console.log('Image value: ', product_image.value)
-    const allergens = (product_allergens.value === '') ? [null] : product_allergens.value.split("-")
-    
-    var newProduct = new FormData()
-    newProduct.append('name',  product_name.value)
-    newProduct.append('description_short',  product_description_short.value)
-    newProduct.append('description_long',  product_description_long.value)
-    newProduct.append('price',   parseFloat(product_price.value).toFixed(2))
-    newProduct.append('stock',  parseInt(product_stock.value))
-    newProduct.append('hidden',  !active)
-    newProduct.append('order',  category.products.length + 1)
-    newProduct.append('allergens',  allergens)
-    newProduct.append('image',  product_image.value)
-    newProduct.append('cat_id',  category.id)
-    // console.log('Form data: ', newProduct)
-    for (var pair of newProduct.entries()) {
-      console.log(pair[0]+ ', ' + pair[1]); 
-    }
-    // const newProduct = {
-    //   name: product_name.value,
-    //   description_short: product_description_short.value,
-    //   description_long: product_description_long.value,
-    //   price: parseFloat(product_price.value).toFixed(2),
-    //   stock: parseInt(product_stock.value),
-    //   hidden: !active,
-    //   order: category.products.length + 1,
-    //   allergens: allergens,
-    //   image: product_image.value,
-    //   cat_id: category.id
-    // }
 
+    const allergens = (product_allergens.value === '') ? [] : product_allergens.value.split("-")
+
+    // Create product to add to the state
+    const newProduct = {
+      name: product_name.value,
+      description_short: product_description_short.value,
+      description_long: product_description_long.value,
+      price: parseFloat(product_price.value).toFixed(2),
+      stock: parseInt(product_stock.value),
+      hidden: !active,
+      order: category.products.length + 1,
+      allergens: allergens,
+      image: '',
+      cat_id: category.id
+    }
+
+    // Create data to send to the server
+    var data = new FormData()
+    data.append('name',  product_name.value)
+    data.append('description_short',  product_description_short.value)
+    data.append('description_long',  product_description_long.value)
+    data.append('price',   parseFloat(product_price.value).toFixed(2))
+    data.append('stock',  parseInt(product_stock.value))
+    data.append('hidden',  !active)
+    data.append('order',  category.products.length + 1)
+    data.append('allergens',  JSON.stringify(allergens))
+    data.append('image',  product_image.value)
+    data.append('cat_id',  category.id)
+
+    // Reset values of the form
     product_name.value = ''
     product_description_short.value = ''
     product_description_long.value = ''
@@ -91,8 +90,7 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
     product_image.value = ''
 
     setActive(false)
-
-    onAddProduct(newProduct)
+    onAddProduct(newProduct, data)
     setOpen(false)
   }
 
@@ -101,23 +99,48 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
   }
 
   const handleFileChange = e => {
-    pr
    
+  }
+
+  const deleteImage = () => {
+    product_image.value = ''
   }
 
   return (
     <div data-category={category.id} onClick={editProduct} className={open ? `${className} h-block-open` : className}>
       {open ? 
         <div className="admin-product__inner">
-          <div className="admin-block__close-wrapper">
+          {/* <div className="admin-block__close-wrapper">
             <div className="admin-block__active">
               <div className={active ? "order-selector h-pointer h-rounded selected" : "order-selector h-pointer h-rounded"}
               onClick={()=>setActive(!active)}></div>
               <div className="admin-block__active-label">Active</div>
             </div>
             <button className="h-btn-padding h-button h-pointer h-rounded" onClick={closeEdit}>Close</button>
-          </div>
-          <form onSubmit={createNewProduct}>
+          </div> */}
+
+          <ProductForm 
+            handleSubmit={(e) => createNewProduct(e)}
+            handleNameChange={(e) => product_name.onChange(e)}
+            handleDescShortChange={(e) => product_description_short.onChange(e)}
+            handleDescLongChange={(e) => product_description_long.onChange(e)}
+            handlePriceChange={(e) => product_price.onChange(e)}
+            handleStockChange={(e) => product_stock.onChange(e)}
+            handleAllergensChange={(e) => product_allergens.onChange(e)}
+            handleImageChange={(e) => product_image.onChange(e)}
+            handleActiveChange={()=>setActive(!active)}
+            product_name={product_name.value}
+            product_description_short={product_description_short.value}
+            product_description_long={product_description_long.value}
+            product_price={product_price.value}
+            product_stock={product_stock.value}
+            product_allergens={product_allergens.value}
+            product_image={product_image.value}
+            deleteImage={() => deleteImage()}
+            active={active}
+            onCloseEdit={() => closeEdit()}
+          /> 
+          {/* <form onSubmit={createNewProduct}>
             <div className="form-line">
               <label htmlFor="product_name">Product name:</label>
               <input
@@ -199,16 +222,15 @@ const AdminNewProductBlock = ({className, category, onAddProduct}) => {
                 id="product_image"
                 className="h-rounded"
                 type="file"
-                // value={product_image.value}
                 onChange={(e) => product_image.onChange(e)}
               />
-              </div>
+            </div>
             <button 
               className="h-full-btn h-button h-rounded h-pointer" 
               type="submit">
               Save
             </button>
-          </form>
+          </form> */}
         </div>
         : 
         <div className="admin-product__inner">

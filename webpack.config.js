@@ -2,13 +2,18 @@ const path = require('path')
 const webpack = require('webpack')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const copyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const MakeDirWebpackPlugin = require('make-dir-webpack-plugin');
 
 const config = (env, argv) => {
 
   const backend_url = argv.mode === 'production'
     ? 'https://shrouded-atoll-37097.herokuapp.com/api/'
     : 'http://localhost:3001/api/'
+  
+    const static = argv.mode === 'production'
+    ? 'https://shrouded-atoll-37097.herokuapp.com/uploads/'
+    : 'http://localhost:3001/uploads/'
 
   return {
     entry: ['@babel/polyfill', './src/index.js'],
@@ -55,7 +60,8 @@ const config = (env, argv) => {
     },
     plugins: [
       new webpack.DefinePlugin({
-        BACKEND_URL: JSON.stringify(backend_url)
+        BACKEND_URL: JSON.stringify(backend_url),
+        STATIC: JSON.stringify(static)
       }),
       new MiniCssExtractPlugin({
           filename: `src/styles/main.css`
@@ -63,13 +69,19 @@ const config = (env, argv) => {
       new HtmlWebpackPlugin({
         template: path.join(__dirname, 'public', 'index.html')
       }),
-      new copyWebpackPlugin([{
+      new CopyWebpackPlugin([{
           from: path.resolve(__dirname, 'src/assets/img'),
           to: path.resolve(__dirname, 'build/assets/img')
       }, {
           from: path.resolve(__dirname, 'src/assets/styles'),
           to: path.resolve(__dirname, 'build/assets/styles')
-      }])
+      }
+      ])
+      // new MakeDirWebpackPlugin({
+      //   dirs: [
+      //     { path: path.resolve(__dirname, 'build/assets/uploads') }
+      //   ]
+      // })
     ]
   }
 }

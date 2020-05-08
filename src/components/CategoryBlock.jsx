@@ -19,7 +19,8 @@ const CategoryBlock = ({
     onEditProduct, 
     onDeleteProduct, 
     onEditCategory, 
-    onDeleteCategory
+    onDeleteCategory,
+    onPictureClick
   }) => {
   // const counter = useCounter(max || 30)
 
@@ -104,8 +105,9 @@ const CategoryBlock = ({
                 className="admin-block h-rounded h-block admin-product__block" 
                 product={prod}
                 category={category}
-                onEditProduct={(el) => onEditProduct(el)}
+                onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
                 onDeleteProduct={(el) => onDeleteProduct(el)}
+                onPictureClick={(el) => onPictureClick(el)}
               />
               )
           } else if (showingActive === !prod.hidden) {
@@ -116,8 +118,9 @@ const CategoryBlock = ({
                 className="admin-block h-rounded h-block admin-product__block" 
                 product={prod}
                 category={category}
-                onEditProduct={(el) => onEditProduct(el)}
+                onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
                 onDeleteProduct={(el) => onDeleteProduct(el)}
+                onPictureClick={(el) => onPictureClick(el)}
               />
               )
           }
@@ -132,7 +135,7 @@ const CategoryBlock = ({
       <AdminNewProductBlock 
           categoryName={category.name} 
           category={category} 
-          onAddProduct={(el) => onAddProduct(el)}
+          onAddProduct={(newProduct, data) => onAddProduct(newProduct, data)}
           className="admin-block h-text-center h-700 h-pointer h-rounded h-block admin-product__block admin-product__new" />
 
 

@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
-const ProductForm = ({ 
+const ProductForm = ({
+  product,
   handleSubmit,
   handleNameChange,
   handleDescShortChange,
@@ -17,14 +18,37 @@ const ProductForm = ({
   product_stock,
   product_allergens,
   product_image,
+  deleteImage,
   active,
   onCloseEdit
 }) => {
+
+  console.log('Product image: ', product_image)
+  const [imageName, setImageName] = useState(product ? product.image : '')
+  const [uploadedImage, setUploadedImage] = useState(null)
+
+  console.log('Image of the product: ', imageName)
+
+  // useEffect(() => {
+  //   setImageName(product.image)
+  // })
 
   console.log('Product name in Product form: ', product_name)
 
   const closeEdit = () => {
     onCloseEdit(false)
+  }
+
+  const imageToUpload = e => {
+    setImageName(e.target.value.split( '\\' ).pop())
+    setUploadedImage(URL.createObjectURL(e.target.files[0]))
+    handleImageChange(e)
+  }
+
+  const onDeleteImage = () => {
+    setImageName('')
+    setUploadedImage(null)
+    deleteImage()
   }
 
   return (
@@ -114,15 +138,27 @@ const ProductForm = ({
         </div>
         <div className="form-line image-upload__line">
 
-          <label htmlFor="product_image">Upload an image of this product:</label>
-          <input
-            id="product_image"
-            className="h-rounded"
-            type="file"
-            value={product_image}
-            onChange={handleImageChange}
-          />
+          <div className={imageName !== '' ? "admin-image__upload" : "admin-image__upload admin-delete__option"}>
+            <input
+              id="product_image"
+              className="h-rounded"
+              type="file"
+              onChange={imageToUpload}
+            />
+            <label className='h-rounded' htmlFor="product_image">
+              {imageName === '' ? 'Choose an image for this product...' : 
+              <span>Your file: {imageName}
+                <br /><br />
+                <b>Click here to select different one!</b>
+              </span> }
+            </label>
+            {imageName !== '' && <button className="admin-delete__image h-btn-padding h-button h-pointer h-rounded" onClick={onDeleteImage}>Delete</button> }
+
+          </div>
         </div>
+        {(imageName !== '') && (<div className="admin-product__image">
+          <img className='product-img h-rounded h-pointer' src={(uploadedImage)? uploadedImage : `${STATIC}${imageName}`} alt=""/>
+        </div>)}
         <button 
           className="h-full-btn h-button h-rounded h-pointer" 
           type="submit">

@@ -18,6 +18,7 @@ import AdminMenu from '../components/AdminMenu.jsx'
 import AdminProductBlock from '../components/AdminProductBlock.jsx'
 import AdminNewProductBlock from '../components/AdminNewProductBlock.jsx'
 import CategoryBlock from '../components/CategoryBlock.jsx'
+import PictureModal from '../components/PictureModal.jsx'
 
 
 const Menu = ({user}) => {
@@ -35,6 +36,7 @@ const Menu = ({user}) => {
   const [categoriesToShow, setCategoriesToShow] = useState([])
   const [modal, setModal] = useState(false)
   const [delivery, setDelivery] = useState(false)
+  const [productShown, setProductShown] = useState(null)
 
   const [showActive, setShowActive] = useState(true)
 
@@ -99,25 +101,27 @@ const Menu = ({user}) => {
   }
 
 
-  const handleProductAddition = async (newProduct) => {
+  const handleProductAddition = async (newProduct, data) => {
     // const new_product = db.products[0]
   
     try {
 
-      const response = await productService.create(newProduct)
+      const response = await productService.create(data)
 
-      const new_categories = categories.map((cat, i) => {
-        if (cat.id === newProduct.cat_id) {
-          cat.products = cat.products.concat(newProduct)
-        }
-        return cat
-      })
-      setCategories(new_categories)
+      getCategories()
 
-      setProducts(products.concat(response))
+      // const new_categories = categories.map((cat, i) => {
+      //   if (cat.id === newProduct.cat_id) {
+      //     cat.products = cat.products.concat(newProduct)
+      //   }
+      //   return cat
+      // })
+      // setCategories(new_categories)
+
+      // setProducts(products.concat(response))
       
     } catch (e) {
-      console.log("Creating new product error: ", e)
+      console.log("Creating new product error: ", e.message)
     }
 
   }
@@ -145,46 +149,36 @@ const Menu = ({user}) => {
 
   }
 
+  const handleEditProduct = async (editedProduct, data) => {
+
+    console.log("Category being created")
+  
+    try {
+
+      const response = await productService.update(data)
+
+      getCategories()
+
+      // const new_categories = categories.map((cat, i) => {
+      //   cat.products = cat.products.map((product, i) => {
+      //     return editedProduct.id === product.id ? editedProduct : product
+      //   })
+      //   return cat
+      // })
+      // setCategories(new_categories)
+
+
+      
+    } catch (e) {
+      console.log("Creating new category error: ", e)
+    }
+
+  }
+
   const showPictureModal = (picture) => {
     setModalPic(picture)
     setModal(!modal)
 
-  }
-
-  const handleItemAdded = (prod_price, id) => {
-    const value = parseFloat(prod_price);
-
-    console.log('id of the item: ', id)
-
-    setPrice(price+value)
-    setAmount(amount+1)
-    if(basket[id]) {
-      const old_value = basket[id]
-      const new_basket = {...basket, [id]: old_value+1}
-      setBasket(new_basket)
-
-    } else {
-      const new_basket = {...basket, [id]: 1}
-      setBasket(new_basket)
-    }
-    console.log("Product added to basket: ", basket)
-  }
-
-  const handleItemRemoved = (prod_price, id) => {
-    const value = parseFloat(prod_price);
-    if (amount !== 0) setPrice(price-value)
-    if (amount !== 0) setAmount(amount-1)
-    if(basket[id]) {
-      const old_value = basket[id]
-      const new_basket = {...basket, [id]: old_value-1}
-      setBasket(new_basket)
-
-    }
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    console.log("Form submitted")
   }
 
   const filterList = (t) => {
@@ -257,29 +251,18 @@ const Menu = ({user}) => {
     }
 
   }
-  const handleEditProduct = async (prod) => {
-
-    console.log("Category being created")
   
-    try {
-
-      const response = await productService.update(prod)
-      const new_categories = categories.map((cat, i) => {
-      
-        cat.products = cat.products.map((product, i) => {
-          return prod.id === product.id ? prod : product
-        })
-        return cat
-      })
-      setCategories(new_categories)
-      
-    } catch (e) {
-      console.log("Creating new category error: ", e)
-    }
-
-  }
   const handleActiveChange = val => {
     setShowActive(val)
+  }
+
+  const handlePictureClick = product => {
+    setProductShown(product)
+    setModal(true)
+  }
+  const handleModalClosing = () => {
+    setProductShown(null)
+    setModal(false)
   }
 
   if (user === null) {
@@ -287,6 +270,13 @@ const Menu = ({user}) => {
   } else {
     return (
       <div className="app-wrapper">
+
+        {modal && <PictureModal 
+          picture={modalPic}
+          product={productShown}
+          onClose={() => handleModalClosing()}>
+
+          </PictureModal>}
 
         <AdminMenu />
 
@@ -327,10 +317,11 @@ const Menu = ({user}) => {
                           category={cat}
                           showingActive={showActive}
                           onDeleteProduct={(el) => handleProductDeletion(el)}
-                          onAddProduct={(el) => handleProductAddition(el)}
-                          onEditProduct={(el) => handleEditProduct(el)}
+                          onAddProduct={(newProduct, data) => handleProductAddition(newProduct, data)}
+                          onEditProduct={(editedProduct, data) => handleEditProduct(editedProduct, data)}
                           onDeleteCategory={(el) => handleDeleteCategory(el)}
                           onEditCategory={(el) => handleEditCategory(el)}
+                          onPictureClick={(el) => handlePictureClick(el)}
                           />
                         )
                   
@@ -342,10 +333,11 @@ const Menu = ({user}) => {
                             category={cat}
                             showingActive={showActive}
                             onDeleteProduct={(el) => handleProductDeletion(el)}
-                            onAddProduct={(el) => handleProductAddition(el)}
-                            onEditProduct={(el) => handleEditProduct(el)}
+                            onAddProduct={(newProduct, data) => handleProductAddition(newProduct, data)}
+                            onEditProduct={(editedProduct, data) => handleEditProduct(editedProduct, data)}
                             onDeleteCategory={(el) => handleDeleteCategory(el)}
                             onEditCategory={(el) => handleEditCategory(el)}
+                            onPictureClick={(el) => handlePictureClick(el)}
                            />
                           )
                       }

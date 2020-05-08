@@ -17,9 +17,6 @@ const getAll = () => {
 
 const create = async newObject => {
   console.log('Create new product: ', newObject)
-  for (var pair of newObject.entries()) {
-    console.log(pair[0]+ ', ' + pair[1]); 
-  }
   const config = {
     headers: { 
       'content-type': 'multipart/form-data',
