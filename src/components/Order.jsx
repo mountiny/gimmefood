@@ -3,32 +3,12 @@ import useCounter from '../hooks/counterHook'
 import { IMAGES } from '../config'
 
 const Order = (props) => {
-  // const counter = useCounter(max || 30)
 
   const [sorted, setSorted] = useState(false)
-
-  // const handleFirstAddition = () => {
-  //   if (counter.value === 0) {
-  //     counter.increase()
-  //     addItem()
-  //   }
-  // }
 
   const handleSortingOrder = () => {
     setSorted(!sorted)
   }
-
-
-  // const addItem = () => {
-  //   console.log("Price in Product:", price)
-  //   onItemAdded(price, name)
-  // }
-  // const removeItem = () => {
-  //   if (counter.value !== 0) {
-  //     console.log("Price to be romved in Product:", price)
-  //     onItemRemoved(price, name)
-  //   }
-  // }
 
   return (
     <div className="order-block h-rounded">

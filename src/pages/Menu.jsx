@@ -1,125 +1,65 @@
-import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import '../assets/styles/main.scss'
-import { IMAGES } from '../config'
 import productService from '../services/products'
+import usersService from '../services/users'
 import categoriesService from '../services/categories'
 import resetDB from '../services/resetDB'
-import loginService from '../services/login'
-import usersService from '../services/users'
-import db from '../../db.json'
-import { Redirect, Link } from "react-router-dom"
-
-
-// Hooks
-import useField from '../hooks/fieldHook'
+import { Redirect } from "react-router-dom"
+import arrayMove from 'array-move';
 
 // Components
 import AdminMenu from '../components/AdminMenu.jsx'
-import AdminProductBlock from '../components/AdminProductBlock.jsx'
-import AdminNewProductBlock from '../components/AdminNewProductBlock.jsx'
 import CategoryBlock from '../components/CategoryBlock.jsx'
+import CategoryForm from '../components/CategoryForm.jsx'
 import PictureModal from '../components/PictureModal.jsx'
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
 
 const Menu = ({user}) => {
 
-  const [panel, setPanel] = useState(0)
-  const [orderFilter, setOrderFilter] = useState(0)
-
   const [counter, setCounter] = useState(0)
-  const [price, setPrice] = useState(0)
-  const [amount, setAmount] = useState(0)
   const [modalPic, setModalPic] = useState("")
   const [values, setValues] = useState([])
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
-  const [categoriesToShow, setCategoriesToShow] = useState([])
   const [modal, setModal] = useState(false)
-  const [delivery, setDelivery] = useState(false)
   const [productShown, setProductShown] = useState(null)
 
   const [showActive, setShowActive] = useState(true)
-
-  const [newCategoryActive, setNewCategoryActive] = useState(false)
   
   const [newCategory, setNewCategory] = useState(false)
-  
-  const name = useField("name")
-  const phone = useField("phone")
-  const email = useField("email")
-  const note = useField("note")
-  
-  const category_name = useField("category_name")
 
+  const SortableItem = SortableElement(({children}) => <div>{children}</div>);
+
+  const SortableList = SortableContainer(({children}) => {
+    return <div>{children}</div>;
+  });
 
   // Get all products
 
   useEffect(() => {
-    console.log('User in Menu: ', user)
+    console.log('Use effects')
     getCategories()
-    // productService
-    //   .getAll()
-    //   .then(products => {
-    //     console.log("Products: ", products)
-    //     setProducts(products)
-    //   })
   }, [newCategory, products])
 
   const getCategories = () => {
     const params = {username: user.username}
-    categoriesService
-    .getAllByParams(params)
-    .then(cats => {
-      console.log('Users categories: ', cats)
-      setCategories(cats)
-    })
-  }
-  // Get all categories
-
-  // useEffect(() => {
-  //   // populateDB()
-  //   categoriesService
-  //     .getAll()
-  //     .then(categories => {
-  //       console.log("Categories: ", categories)
-  //       setCategories(categories)
-  //     })
-  // }, [handleCategoryAddition])
-
-  
-  const handleClick = () => {
-    setCounter(counter + 1)
-    setValues(values.concat(counter))
-  }
-
-  const handleDatabaseReset = () => {
-    if (window.confirm("Yes")) {
-      resetDB.reset().then(response => {
-        console.log(response)
+    usersService
+      .getCategoriesMenu(params)
+      .then(cats => {
+        console.log('Data sent: ', cats)
+        setCategories(cats)
       })
-    }
   }
-
 
   const handleProductAddition = async (newProduct, data) => {
-    // const new_product = db.products[0]
   
     try {
 
       const response = await productService.create(data)
+      console.log('Product Addition')
 
       getCategories()
-
-      // const new_categories = categories.map((cat, i) => {
-      //   if (cat.id === newProduct.cat_id) {
-      //     cat.products = cat.products.concat(newProduct)
-      //   }
-      //   return cat
-      // })
-      // setCategories(new_categories)
-
-      // setProducts(products.concat(response))
       
     } catch (e) {
       console.log("Creating new product error: ", e.message)
@@ -157,38 +97,14 @@ const Menu = ({user}) => {
     try {
 
       const response = await productService.update(data)
+      console.log('Product Edit')
 
       getCategories()
-
-      // const new_categories = categories.map((cat, i) => {
-      //   cat.products = cat.products.map((product, i) => {
-      //     return editedProduct.id === product.id ? editedProduct : product
-      //   })
-      //   return cat
-      // })
-      // setCategories(new_categories)
-
 
       
     } catch (e) {
       console.log("Creating new category error: ", e)
     }
-
-  }
-
-  const showPictureModal = (picture) => {
-    setModalPic(picture)
-    setModal(!modal)
-
-  }
-
-  const filterList = (t) => {
-    setOrderFilter(t)
-
-  }
-  const editCategory = (e) => {
-    e.preventDefault()
-    const id = event.target.getAttribute('data-category')
 
   }
 
@@ -212,22 +128,14 @@ const Menu = ({user}) => {
     
   }
 
-  const createNewCategory = async (e) => {
-    e.preventDefault()
+  const createNewCategory = async (newCat) => {
     console.log("Category being created")
   
     try {
 
-      const newCat = {
-        name: category_name.value,
-        hidden: !newCategoryActive,
-        order: categories.length+1
-      }
       const response = await categoriesService.create(newCat)
       setCategories(categories.concat(response))
       setNewCategory(false)
-      setNewCategoryActive(false)
-      category_name.value = ''
       
     } catch (e) {
       console.log("Creating new category error: ", e)
@@ -266,6 +174,20 @@ const Menu = ({user}) => {
     setModal(false)
   }
 
+
+  const handleOnSortEnd = async ({oldIndex, newIndex}) => {
+    const reorderedCategories = arrayMove(categories, oldIndex, newIndex)
+
+    try {
+      const response = await usersService.updateCategories(reorderedCategories)
+      setCategories(reorderedCategories)
+      
+    } catch (e) {
+      console.log("Creating new category error: ", e)
+    }
+
+  }
+
   if (user === null) {
     return <Redirect to="/login" />
   } else {
@@ -302,32 +224,26 @@ const Menu = ({user}) => {
 
             <div className="admin-categories__cont">
 
+            <div className={newCategory ? "admin-block h-rounded h-block admin-category__new" : "admin-block h-block-open h-text-center h-700 h-pointer h-rounded h-block admin-category_block admin-category__new"} 
+                onClick={()=>{if (!newCategory) setNewCategory(true)}}>
+                {newCategory ? 
+                  <CategoryForm
+                    handleSubmit={(el) => createNewCategory(el)}
+                    onCloseEdit={()=>{if (newCategory) setNewCategory(false)}}
+                  />
+                  : "+ ADD CATEGORY"}
+              </div>
+
               { (categories.length !== 0) ?
-
-                  categories.map((cat, i) => {
-
-                    console.log('Active ', showActive)
-                    console.log('Active ', categories)
+                   <SortableList onSortEnd={handleOnSortEnd} useDragHandle>
+                  {categories.map((cat, i) => {
 
                     if (!cat.hidden === showActive) {
 
                       return (
-                        <CategoryBlock
-                          className=""
-                          key={i}
-                          category={cat}
-                          showingActive={showActive}
-                          onDeleteProduct={(el) => handleProductDeletion(el)}
-                          onAddProduct={(newProduct, data) => handleProductAddition(newProduct, data)}
-                          onEditProduct={(editedProduct, data) => handleEditProduct(editedProduct, data)}
-                          onDeleteCategory={(el) => handleDeleteCategory(el)}
-                          onEditCategory={(el) => handleEditCategory(el)}
-                          onPictureClick={(el) => handlePictureClick(el)}
-                          />
-                        )
-                  
-                      } else if (!showActive && cat.products.some((prod)=> prod.hidden === !showActive)) {
-                        return (
+                        <SortableItem 
+                          key={`item-${cat.id}`} 
+                          index={i}>
                           <CategoryBlock
                             className=""
                             key={i}
@@ -339,10 +255,32 @@ const Menu = ({user}) => {
                             onDeleteCategory={(el) => handleDeleteCategory(el)}
                             onEditCategory={(el) => handleEditCategory(el)}
                             onPictureClick={(el) => handlePictureClick(el)}
-                           />
+                            />
+                          </SortableItem>
+                        )
+                  
+                      } else if (!showActive && cat.products.some((prod)=> prod.hidden === !showActive)) {
+                        return (
+                          <SortableItem 
+                          key={`item-${cat.id}`} 
+                          index={i}>
+                            <CategoryBlock
+                              className=""
+                              key={i}
+                              category={cat}
+                              showingActive={showActive}
+                              onDeleteProduct={(el) => handleProductDeletion(el)}
+                              onAddProduct={(newProduct, data) => handleProductAddition(newProduct, data)}
+                              onEditProduct={(editedProduct, data) => handleEditProduct(editedProduct, data)}
+                              onDeleteCategory={(el) => handleDeleteCategory(el)}
+                              onEditCategory={(el) => handleEditCategory(el)}
+                              onPictureClick={(el) => handlePictureClick(el)}
+                            />
+                           </SortableItem>
                           )
                       }
-                    })
+                    })}
+                    </SortableList>
                 : (
                   <div className="">
                     <h4 className="admin-category__heading">You have not created any {showActive ? "active" : "inactive"} categories yet</h4>
@@ -351,46 +289,19 @@ const Menu = ({user}) => {
                 
               }
 
-              <div className={newCategory ? "admin-block h-rounded h-block admin-category__new" : "admin-block h-block-open h-text-center h-700 h-pointer h-rounded h-block admin-category_block admin-category__new"} 
+              {/* <div className={newCategory ? "admin-block h-rounded h-block admin-category__new" : "admin-block h-block-open h-text-center h-700 h-pointer h-rounded h-block admin-category_block admin-category__new"} 
                 onClick={()=>{if (!newCategory) setNewCategory(true)}}>
                 {newCategory ? 
-                  <div>
-                    <div className="admin-block__close-wrapper">
-                      <div className="admin-block__active">
-                        <div className={newCategoryActive ? "order-selector h-pointer h-rounded selected" : "order-selector h-pointer h-rounded"}
-                        onClick={()=>setNewCategoryActive(!newCategoryActive)}></div>
-                        <div className="admin-block__active-label">Active</div>
-                      </div>
-                      <button className="h-btn-padding h-button h-pointer h-rounded" onClick={()=>{if (newCategory) setNewCategory(false)}}>Close</button>
-                    </div>
-                     {/* <div className="form-line">
-                      <div className="admin-block__active">
-                        <div className={newCategoryActive ? "order-selector h-pointer h-rounded selected" : "order-selector h-pointer h-rounded"}
-                        onClick={()=>setNewCategoryActive(!newCategoryActive)}></div>
-                        <div className="admin-block__active-label">Active</div>
-                      </div>
-                    </div> */}
-                  
-                    <form onSubmit={createNewCategory}>
-                      <div className="form-line">
-                        <input
-                          id="category_name"
-                          className="category-new h-rounded"
-                          type="text"
-                          placeholder="Name"
-                          value={category_name.value}
-                          onChange={(e) => category_name.onChange(e)}
-                        />
-                      </div>
-                      <button 
-                        className="h-full-btn h-button h-rounded h-pointer" 
-                        type="submit">
-                        Save
-                      </button>
-                    </form> 
-                  </div>
+                  <CategoryForm
+                    handleSubmit={(el) => createNewCategory(el)}
+                    // handleNameChange={(e) => category_name.onChange(e)}
+                    // handleActiveChange={(el)=>setNewCategoryActive(el)}
+                    // category_name={category_name.value}
+                    // active={newCategoryActive}
+                    onCloseEdit={()=>{if (newCategory) setNewCategory(false)}}
+                  />
                   : "+ ADD CATEGORY"}
-              </div>
+              </div> */}
             </div>
           </div>
           

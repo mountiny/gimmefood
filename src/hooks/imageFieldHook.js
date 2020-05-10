@@ -10,6 +10,7 @@ const useImageField = (type, val = '') => {
   return {
     type,
     value,
+    setValue,
     onChange
   }
 }

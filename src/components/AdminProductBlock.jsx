@@ -21,8 +21,6 @@ const AdminProductBlock = ({
     onPictureClick
   }) => {
 
-  console.log('Porduct image in admin block: ', product.image)
-
   const [open, setOpen] = useState(false)
 
   const product_name = useField("product_name", product.name)
@@ -35,13 +33,11 @@ const AdminProductBlock = ({
 
 
   const [active, setActive] = useState(!product.hidden)
-  // const [productImageKey, setProductImageKey] = useState(Date.now())
 
   const DragHandle = SortableHandle(() => <div className="admin-block__handle h-pointer">::</div>)
 
   const editProduct = () => {
     if (!open) setOpen(true)
-    console.log('Product name after changiung edit product: ', product_name.value)
   }
 
 
@@ -64,20 +60,17 @@ const AdminProductBlock = ({
       alert("Given product price is invalid. Please, enter the price in following format with two decimal places: eg. 9.00 or 3.99!")
       return
     }
-    console.log('Stock values: ', typeof(parseInt(product_stock.value)))
-
-    console.log('Category in createNew product: ', category)
 
     if (parseInt(product_stock.value) <= -1) {
       alert("Given stock amount is not valid. Enter -1 for unlimited or some integer larger than -1.")
       return
     }
 
-    if (product_description_short.length > 100) {
+    if (product_description_short.value.length > 100) {
       alert("Given short description is too long. Maximum is 100 characters.")
       return
     }
-    if (product_description_long.length > 400) {
+    if (product_description_long.value.length > 400) {
       alert("Given long description is too long. Maximum is 400 characters.")
       return
     }
@@ -97,7 +90,6 @@ const AdminProductBlock = ({
       cat_id: category.id
     }
 
-    console.log('Product image value: ', product_image.value)
     
     var data = new FormData()
     data.append('id',  product.id)
@@ -114,28 +106,19 @@ const AdminProductBlock = ({
 
     onEditProduct(editedProduct, data)
 
-    // product_image.value = ''
-    // setProductImageKey(Date.now())
-
-    console.log('Product image after sending edit: ', product_image.value)
-
     setOpen(false)
 
   }
 
   const deleteImage = () => {
-    product_image.value = ''
+    product_image.setValue('')
   }
-
-  console.log('Product Image: ', product.image)
-  console.log('Product image in front of the render: ',product_image.value)
 
   return (
     <div 
       data-product={product.id} 
       data-category={category.id}
       className={open ? `${className} h-block-open` : className}>
-        {console.log('Product image in render: ',product_image.value)}
       {open ? 
         <ProductForm 
           product={product}

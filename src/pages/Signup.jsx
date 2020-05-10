@@ -74,7 +74,9 @@ const Signup = ({user}) => {
         username: username.value, 
         password: password.value, 
         name: name.value, 
-        slug: slug.value, 
+        slug: slug.value,
+        business_description: '',
+        takeout_description: '',
         email: email.value
       }
 

@@ -27,17 +27,8 @@ const ProductForm = ({
   onCloseEdit
 }) => {
 
-  console.log('Product image: ', product_image)
   const [imageName, setImageName] = useState(product ? product.image : '')
   const [uploadedImage, setUploadedImage] = useState(null)
-
-  console.log('Image of the product: ', imageName)
-
-  // useEffect(() => {
-  //   setImageName(product.image)
-  // })
-
-  console.log('Product name in Product form: ', product_name)
 
   const closeEdit = () => {
     onCloseEdit(false)
@@ -51,7 +42,6 @@ const ProductForm = ({
       alert('The image limit si 2MB. Please, upload smaller image.')
       return;
     }
-    console.log('Image size: ', size)
     setImageName(e.target.value.split( '\\' ).pop())
     setUploadedImage(URL.createObjectURL(e.target.files[0]))
     handleImageChange(e)
@@ -155,12 +145,12 @@ const ProductForm = ({
               id="product_image"
               className="h-rounded"
               type="file"
-              accept=".gif,.jpg,.jpeg,.png,.heic"
+              accept=".gif,.jpg,.jpeg,.png"
               onChange={imageToUpload}
             />
             <label className='h-rounded' htmlFor="product_image">
               {imageName === '' ? 'Choose an image for this product...' : 
-              <span>Your file: {imageName}
+              <span>See the product image below:
                 <br /><br />
                 <b>Click here to select different one!</b>
               </span> }

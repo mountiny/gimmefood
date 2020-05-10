@@ -5,7 +5,7 @@ import arrayMove from 'array-move';
 // Components
 import AdminProductBlock from './AdminProductBlock.jsx'
 import AdminNewProductBlock from './AdminNewProductBlock.jsx'
-import {SortableContainer, SortableElement} from 'react-sortable-hoc';
+import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 
 // Hooks
 import useCounter from '../hooks/counterHook'
@@ -25,10 +25,12 @@ const CategoryBlock = ({
   // const counter = useCounter(max || 30)
 
   const [open, setOpen] = useState(false)
+  const [hide, setHide] = useState(false)
   const [active, setActive] = useState(!category.hidden)
 
   const category_name = useField("product_name", category.name)
 
+  const DragHandle = SortableHandle(() => <span className="admin-block__handle admin-category__handle h-pointer">::</span>)
 
   const SortableItem = SortableElement(({children}) => <div>{children}</div>);
 
@@ -100,71 +102,72 @@ const CategoryBlock = ({
         </div>
        :
        <div className="admin-category__heading">
-          <div>
-            <h3 className="page-subheading">{category.name}</h3>
+          <div className="category-heading__wrapper">
+            <h3 className="category-heading"><DragHandle />{category.name}</h3>
           </div>
           <div className="admin-block__actions">
+            <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__hide" onClick={() => setHide(!hide)}>{hide ? "Show" : "Hide"}</button>
             <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__edit" onClick={() => editCategory()}>Edit</button>
             <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__delete" onClick={() => deleteCategory()}>Delete</button>
           </div>
         </div>
        }
-      {/* <SortableList onSortEnd={onSortEnd}> */}
-      {(category.products.length !== 0) ? 
-        <SortableList onSortEnd={handleOnSortEnd} useDragHandle>
-        {category.products.map((prod, j) => {
+      <div style={{display: hide ? "none" : "block"}}>
+        {(category.products.length !== 0) ? 
+          <SortableList onSortEnd={handleOnSortEnd} useDragHandle>
+          {category.products.map((prod, j) => {
 
-          if (category.hidden && !showingActive) {
-            return (
-              <SortableItem 
-                key={`item-${prod.id}`} 
-                product={prod.id}
-                index={j}>
-                <AdminProductBlock 
-                  key={j} 
-                  className="admin-block h-block h-rounded admin-product__block" 
-                  product={prod}
-                  category={category}
-                  onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
-                  onDeleteProduct={(el) => onDeleteProduct(el)}
-                  onPictureClick={(el) => onPictureClick(el)}
-                />
-              </SortableItem>
-              )
-          } else if (showingActive === !prod.hidden) {
+            if (category.hidden && !showingActive) {
+              return (
+                <SortableItem 
+                  key={`item-${prod.id}`} 
+                  index={j}>
+                  <AdminProductBlock 
+                    key={j} 
+                    className="admin-block h-block h-rounded admin-product__block" 
+                    product={prod}
+                    category={category}
+                    onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
+                    onDeleteProduct={(el) => onDeleteProduct(el)}
+                    onPictureClick={(el) => onPictureClick(el)}
+                  />
+                </SortableItem>
+                )
+            } else if (showingActive === !prod.hidden) {
 
-            return (
-              <SortableItem 
-                key={`item-${prod.id}`} 
-                index={j}>
-                <AdminProductBlock 
-                  key={j} 
-                  className="admin-block h-block h-rounded admin-product__block" 
-                  product={prod}
-                  category={category}
-                  onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
-                  onDeleteProduct={(el) => onDeleteProduct(el)}
-                  onPictureClick={(el) => onPictureClick(el)}
-                />
-              </SortableItem>
-              )
-          }
-          
+              return (
+                <SortableItem 
+                  key={`item-${prod.id}`} 
+                  index={j}>
+                  <AdminProductBlock 
+                    key={j} 
+                    className="admin-block h-block h-rounded admin-product__block" 
+                    product={prod}
+                    category={category}
+                    onEditProduct={(editedProduct, data) => onEditProduct(editedProduct, data)}
+                    onDeleteProduct={(el) => onDeleteProduct(el)}
+                    onPictureClick={(el) => onPictureClick(el)}
+                  />
+                </SortableItem>
+                )
+            }
+            
 
-        })}
-        </SortableList>
-      : 
-      <div className="">
-        <h4 className="admin-category__heading">You have not added any {showingActive ? "active" : "inactive"} product to this category yet.</h4>
+          })}
+          </SortableList>
+        : 
+        <div className="">
+          <h4 className="admin-category__heading">You have not added any {showingActive ? "active" : "inactive"} product to this category yet.</h4>
+        </div>
+        }
+        <AdminNewProductBlock 
+          categoryName={category.name} 
+          category={category} 
+          onAddProduct={(newProduct, data) => onAddProduct(newProduct, data)}
+          className="admin-block h-text-center h-700 h-pointer h-rounded h-block admin-product__block admin-product__new"
+          onPictureClick={(el) => onPictureClick(el)}
+        />
       </div>
-      }
-      <AdminNewProductBlock 
-        categoryName={category.name} 
-        category={category} 
-        onAddProduct={(newProduct, data) => onAddProduct(newProduct, data)}
-        className="admin-block h-text-center h-700 h-pointer h-rounded h-block admin-product__block admin-product__new"
-        onPictureClick={(el) => onPictureClick(el)}
-      />
 
 
     </div>

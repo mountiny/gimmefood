@@ -25,7 +25,6 @@ let user = null
 if (loggedUserJSON) {
   user = JSON.parse(loggedUserJSON)
 }
-console.log('Local storage user:', user)
 
 
 

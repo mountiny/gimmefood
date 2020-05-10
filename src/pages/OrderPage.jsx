@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import axios from 'axios'
 import '../assets/styles/main.scss'
-import { IMAGES, COMPANY } from '../config'
+import { IMAGES } from '../config'
 import { Link, useHistory } from "react-router-dom"
 import productService from '../services/products'
 import categoriesService from '../services/categories'
@@ -18,6 +18,9 @@ import ScrollToTop from '../components/ScrollToTop.jsx'
 import CardSection from '../components/CardSection.jsx'
 
 const OrderPage = () => {
+
+  const slug = useParams().business
+
   const [counter, setCounter] = useState(0)
   const [price, setPrice] = useState(0)
   const [amount, setAmount] = useState(0)
@@ -139,19 +142,6 @@ const OrderPage = () => {
   }, [handleCategoryAddition])
 
   
-  const handleClick = () => {
-    setCounter(counter + 1)
-    setValues(values.concat(counter))
-  }
-
-  const handleDatabaseReset = () => {
-    if (window.confirm("Yes")) {
-      resetDB.reset().then(response => {
-        console.log(response)
-      })
-    }
-  }
-
   const handleCategoryAddition = () => {
     const new_category = db.categories[0]
     console.log("Category about add: ", new_category)
@@ -174,50 +164,8 @@ const OrderPage = () => {
     })
   }
 
-  const showPictureModal = (picture) => {
-    setModalPic(picture)
-    setModal(!modal)
-
-  }
-
-  const handleItemAdded = (prod_price, id) => {
-    const value = parseFloat(prod_price);
-
-    console.log('id of the item: ', id)
-
-    setPrice(price+value)
-    setAmount(amount+1)
-    if(basket[id]) {
-      const old_value = basket[id]
-      const new_basket = {...basket, [id]: old_value+1}
-      setBasket(new_basket)
-
-    } else {
-      const new_basket = {...basket, [id]: 1}
-      setBasket(new_basket)
-    }
-    console.log("Product added to basket: ", basket)
-  }
-
-  const handleItemRemoved = (prod_price, id) => {
-    const value = parseFloat(prod_price);
-    if (amount !== 0) setPrice(price-value)
-    if (amount !== 0) setAmount(amount-1)
-    if(basket[id]) {
-      const old_value = basket[id]
-      const new_basket = {...basket, [id]: old_value-1}
-      setBasket(new_basket)
-
-    }
-  }
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   console.log("Form submitted")
-  // }
-
   const getOrder = () => {
-    const LSKey = `${COMPANY}-order`
+    const LSKey = `${slug}-order`
     const new_order = JSON.parse(window.localStorage.getItem(LSKey))
     if (new_order) {
       setOrder(order)

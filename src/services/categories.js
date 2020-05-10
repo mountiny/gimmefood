@@ -7,7 +7,6 @@ const baseUrl = `${BACKEND_URL}${url}`
 let token = null
 
 const setToken = newToken => {
-  console.log(newToken)
   token = `bearer ${newToken}`
 }
 
