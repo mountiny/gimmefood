@@ -23,6 +23,7 @@ const CategoryBlock = ({
     onPictureClick
   }) => {
   // const counter = useCounter(max || 30)
+  console.log('Category: ', category)
 
   const [open, setOpen] = useState(false)
   const [hide, setHide] = useState(false)

@@ -62,7 +62,7 @@ const Login = ({user, changeUser}) => {
       window.localStorage.setItem(
         'loggedBonTakeoutUser', JSON.stringify(logged_user)
       )
-      // noteService.setToken(user.token)
+      servicesSetToken.setToken(logged_user.token)
       username.value = ''
       password.value = ''
       changeUser(logged_user)
@@ -75,6 +75,13 @@ const Login = ({user, changeUser}) => {
         setErrorMessage(null)
       }, 5000)
     }
+  }
+
+  const servicesSetToken = (token) => {
+    // console.log('Services token: ', token)
+    productService.setToken(token)
+    usersService.setToken(token)
+    categoriesService.setToken(token)
   }
 
   if (user) {

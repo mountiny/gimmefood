@@ -134,7 +134,8 @@ const Menu = ({user}) => {
     try {
 
       const response = await categoriesService.create(newCat)
-      setCategories(categories.concat(response))
+      getCategories()
+      // setCategories(categories.concat(response))
       setNewCategory(false)
       
     } catch (e) {
