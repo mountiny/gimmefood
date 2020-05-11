@@ -62,7 +62,7 @@ const Login = ({user, changeUser}) => {
       window.localStorage.setItem(
         'loggedBonTakeoutUser', JSON.stringify(logged_user)
       )
-      servicesSetToken.setToken(logged_user.token)
+      servicesSetToken(logged_user.token)
       username.value = ''
       password.value = ''
       changeUser(logged_user)
