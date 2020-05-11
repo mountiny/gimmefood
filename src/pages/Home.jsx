@@ -95,15 +95,16 @@ const Home = () => {
     const params = { slug: slug }
     try {
       const response = await usersService.getCategories(params)
-      saveProductsToLS(response)
+      saveDataToLS(response)
       console.log('Response: ', response)
+      setUser(response)
       setCategories(response.categories)
     } catch (e) {
       setError(e.response.status)
     }
   }
 
-  const saveProductsToLS = (cat) => {
+  const saveDataToLS = (cat) => {
     window.localStorage.setItem(
       `${slug}-data`, JSON.stringify(cat)
     )
