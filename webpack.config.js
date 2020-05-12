@@ -8,11 +8,11 @@ const MakeDirWebpackPlugin = require('make-dir-webpack-plugin');
 const config = (env, argv) => {
 
   const backend_url = argv.mode === 'production'
-    ? 'https://shrouded-atoll-37097.herokuapp.com/api/'
+    ? 'http://www.bontakeout.com/api/'
     : 'http://localhost:3001/api/'
   
     const static = argv.mode === 'production'
-    ? 'https://shrouded-atoll-37097.herokuapp.com/uploads/'
+    ? 'http://www.bontakeout.com/uploads/'
     : 'http://localhost:3001/uploads/'
 
   return {
