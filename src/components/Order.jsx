@@ -1,6 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
-import useCounter from '../hooks/counterHook'
-import { IMAGES } from '../config'
+import React, { useState, useEffect } from 'react'
 
 const Order = (props) => {
 

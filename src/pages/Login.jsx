@@ -1,15 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react'
 import '../assets/styles/main.scss'
-import { IMAGES } from '../config'
-import db from '../../db.json'
 import { Redirect, Link, useHistory } from "react-router-dom"
 
 // Services
-import userContext from '../services/userContext';
 import productService from '../services/products'
 import categoriesService from '../services/categories'
-import resetDB from '../services/resetDB'
 import loginService from '../services/login'
 import usersService from '../services/users'
 
@@ -23,33 +18,9 @@ import LoginForm from '../components/LoginForm.jsx'
 const Login = ({user, changeUser}) => {
   const username = useField('text')
   const password = useField('password')
-  // const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
 
   const history = useHistory()
-  
-  const handleClick = () => {
-    setCounter(counter + 1)
-    setValues(values.concat(counter))
-  }
-
-  const handleDatabaseReset = () => {
-    if (window.confirm("Yes")) {
-      resetDB.reset().then(response => {
-        console.log(response)
-      })
-    }
-  }
-
-  const handleUserRegistration = () => {
-    const new_user = db.users[0]
-    usersService.create(new_user).then(response => {
-      console.log(response)
-    }).catch( e => {
-      console.log(e)
-    })
-   
-  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -78,7 +49,6 @@ const Login = ({user, changeUser}) => {
   }
 
   const servicesSetToken = (token) => {
-    // console.log('Services token: ', token)
     productService.setToken(token)
     usersService.setToken(token)
     categoriesService.setToken(token)

@@ -17,9 +17,7 @@ import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 
 const Menu = ({user}) => {
 
-  const [counter, setCounter] = useState(0)
   const [modalPic, setModalPic] = useState("")
-  const [values, setValues] = useState([])
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [modal, setModal] = useState(false)
@@ -135,7 +133,6 @@ const Menu = ({user}) => {
 
       const response = await categoriesService.create(newCat)
       getCategories()
-      // setCategories(categories.concat(response))
       setNewCategory(false)
       
     } catch (e) {
@@ -289,20 +286,6 @@ const Menu = ({user}) => {
                   )
                 
               }
-
-              {/* <div className={newCategory ? "admin-block h-rounded h-block admin-category__new" : "admin-block h-block-open h-text-center h-700 h-pointer h-rounded h-block admin-category_block admin-category__new"} 
-                onClick={()=>{if (!newCategory) setNewCategory(true)}}>
-                {newCategory ? 
-                  <CategoryForm
-                    handleSubmit={(el) => createNewCategory(el)}
-                    // handleNameChange={(e) => category_name.onChange(e)}
-                    // handleActiveChange={(el)=>setNewCategoryActive(el)}
-                    // category_name={category_name.value}
-                    // active={newCategoryActive}
-                    onCloseEdit={()=>{if (newCategory) setNewCategory(false)}}
-                  />
-                  : "+ ADD CATEGORY"}
-              </div> */}
             </div>
           </div>
           

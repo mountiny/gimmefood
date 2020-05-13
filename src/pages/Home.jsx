@@ -73,18 +73,6 @@ const Home = () => {
 
   const fromTop = useScroll()
 
-  // const fromTop = useScroll()
-
-  // useScroll(() => {
-  //   console.log('On scroll')
-  // })
-
-  // console.log('From top: ', useScroll())
-  // const products = useProducts(BACKEND_URL)
-
-  const logoInView = false//useOnScreen(logoRef, '0px')
-  // const productsInScreen = useOnScreen(productRef, '0px')
-
   // Get all products
   useEffect( () => {
     getData()
@@ -125,16 +113,14 @@ const Home = () => {
   }
 
   const showPictureModal = (product) => {
-    // setModalPic(picture)
     setProductShown(product)
     setModal(true)
-
   }
 
   const handleItemAdded = (prod_price, id) => {
     const value = parseFloat(prod_price);
 
-    console.log('id of the item: ', id)
+    // console.log('id of the item: ', id)
 
     setPrice(price+value)
     setAmount(amount+1)
@@ -147,7 +133,7 @@ const Home = () => {
       const new_basket = {...basket, [id]: 1}
       setBasket(new_basket)
     }
-    console.log("Product added to basket: ", basket)
+    // console.log("Product added to basket: ", basket)
   }
 
   const handleItemRemoved = (prod_price, id) => {
@@ -176,7 +162,6 @@ const Home = () => {
           <div>
             {modal ? (
               <PictureModal 
-                // picture={modalPic}
                 product={productShown}
                 onClose={() => {setModal(false)}}>
       

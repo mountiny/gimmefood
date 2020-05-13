@@ -43,10 +43,6 @@ const Product = ({
           <img src={STATIC + picture} alt={name} className="product-img h-rounded"/>
         </div>
         }
-      {/* <div className="product-block__left h-pointer" onClick={() => onPictureClick()}>
-        <img src={STATIC + picture} alt={name} className="product-img h-rounded"/>
-      </div> */}
-       {/* onClick={() => handleFirstAddition()} */}
       <div className="product-block__middle" onClick={() => onPictureClick()}> 
         <span className="product-name h-700">{name}</span>
         <div className="product-desc">

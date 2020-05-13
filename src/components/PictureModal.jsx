@@ -1,12 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import useLockBodyScroll from '../hooks/lockBodyScrollHook'
-import { IMAGES } from '../config'
 
-const PictureModal = ({picture, product, onClose}) => {
+const PictureModal = ({product, onClose}) => {
 
   useLockBodyScroll()
-
-  console.log('Prodcut in modal: ', product)
 
   return (
     <div className="picture-modal modal">

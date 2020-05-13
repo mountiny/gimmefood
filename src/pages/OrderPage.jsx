@@ -21,15 +21,8 @@ const OrderPage = () => {
 
   const slug = useParams().business
 
-  const [counter, setCounter] = useState(0)
-  const [price, setPrice] = useState(0)
-  const [amount, setAmount] = useState(0)
-  const [modalPic, setModalPic] = useState("")
-  const [basket, setBasket] = useState({})
-  const [values, setValues] = useState([])
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
-  const [modal, setModal] = useState(false)
   const [delivery, setDelivery] = useState(0)
   const [order, setOrder] = useState({})
   
@@ -39,7 +32,7 @@ const OrderPage = () => {
   const note = useField("note")
 
   const history = useHistory()
-  // const products = useProducts(BACKEND_URL)
+
 
   const stripe = useStripe();
   const elements = useElements();
@@ -57,7 +50,6 @@ const OrderPage = () => {
     // Get client sected
 
     const sekred = stripeService.getStripeSecred()
-    console.log(sekred)
 
     // Get a reference to a mounted CardElement. Elements knows how
     // to find your CardElement because there can only ever be one of
@@ -114,13 +106,9 @@ const OrderPage = () => {
     },
   };
 
-
-
   // Get all products
 
   useEffect(() => {
-    // populateDB()
-    console.log("scroll: ", scroll)
     productService
       .getAll()
       .then(products => {
@@ -132,7 +120,6 @@ const OrderPage = () => {
   // Get all categories
 
   useEffect(() => {
-    // populateDB()
     categoriesService
       .getAll()
       .then(categories => {

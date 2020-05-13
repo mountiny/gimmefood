@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   BrowserRouter as Router,
   Switch, Route, Link
@@ -22,9 +22,6 @@ import smoothscroll from 'smoothscroll-polyfill';
 
 // Services
 import userContext from './services/userContext'
-import productService from './services/products'
-import categoriesService from './services/categories'
-import usersService from './services/users'
 
 // Components
 import ProtectedRoute from './components/ProtectedRoute.jsx'
@@ -49,29 +46,30 @@ const Main = (props) => {
           return (
           <div className="main-container">
             <Switch>
-              {/* <Route path="/admin/menu">
-                <Menu />
-              </Route> */}
-              <ProtectedRoute path="/admin/menu" user={user} component={Menu}/>
-              {/* <Route path="/admin/settings">
-                <Settings />
-              </Route> */}
-              <ProtectedRoute path="/admin/settings/edit" user={user} changeUser={changeUser} component={EditProfile}/>
-
-              <ProtectedRoute path="/admin/settings" user={user} changeUser={changeUser} component={Settings}/>
-              {/* <Route exact path="/admin">
-                <Admin />
-              </Route> */}
-              <ProtectedRoute path="/admin" user={user} component={Admin}/>
+              <ProtectedRoute 
+                path="/admin/menu" 
+                user={user} 
+                component={Menu}/>
+              <ProtectedRoute 
+                path="/admin/settings/edit" 
+                user={user} 
+                changeUser={changeUser} 
+                component={EditProfile}/>
+              <ProtectedRoute 
+                path="/admin/settings" 
+                user={user} 
+                changeUser={changeUser} 
+                component={Settings}/>
+              <ProtectedRoute 
+                path="/admin" 
+                user={user} 
+                component={Admin}/>
               <Route exact path="/login">
                 <Login user={user} changeUser={changeUser} />
               </Route>
               <Route exact path="/signup">
                 <Signup user={user} />
               </Route>
-              {/* <Route exact path="/login">
-                <Admin />
-              </Route> */}
               <Route exact path="/:business/order">
                 <OrderPage />
               </Route>

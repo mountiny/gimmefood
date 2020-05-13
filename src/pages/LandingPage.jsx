@@ -254,25 +254,6 @@ const LandingPage = () => {
       </Link>
       {/* <div className="continue-btn h-button h-pointer h-rounded" onClick={()=>scroll(payRef)}>Continue</div> */}
     </div> )}
-      {/* {!logoInView && !modal &&
-        <div className="total-container">
-          <div className="total-line">
-            <div className="total-word">Total:</div>
-            <div className="total-amount">{amount === 0 ? null : amount === 1 ? `${amount} item` : `${amount} items` }</div>
-            <div className="total-price h-text-right">£{price.toFixed(2)}</div>
-          </div>
-
-          <Link 
-            to={amount !== 0 ? "/order": ""} 
-            className="continue-btn h-button h-pointer h-rounded"
-            onClick={() => {
-              if (amount === 0) alert("You have not selected any products.")
-            }}>
-            Continue
-          </Link>
-
-        </div> 
-      } */}
       
 
       <div className="container">
@@ -373,24 +354,6 @@ const LandingPage = () => {
 
         </div>
 
-
-        {/* <div>There is {categories.length} categories.</div>
-        <button onClick={handleCategoryAddition}>Add Categories</button>
-        <div>There is {products.length} products.</div>
-        <button onClick={handleProductAddition}>Add products</button>
-        <br />
-        <button onClick={handleUserRegistration}>Create user</button>
-        <div>There is {users.length} users registered.</div>
-        <button onClick={handleUserLogin}>Login</button>
-        {user === null ?
-            <div><h4>Noone is logged in</h4></div> :
-            <div>
-              {user.name}
-              <button onClick={handleUserLogout}>Log out</button>
-            </div>
-          }
-        <br />
-        <button onClick={handleDatabaseReset}>Reset database</button> */}
       </div>
     </div>
   )

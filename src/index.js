@@ -6,8 +6,6 @@ import {
   BrowserRouter as Router
 } from "react-router-dom"
 
-
-
 async function loadPolyfills() {
   if (typeof window.IntersectionObserver === 'undefined') {
     await import('intersection-observer')
@@ -25,8 +23,6 @@ let user = null
 if (loggedUserJSON) {
   user = JSON.parse(loggedUserJSON)
 }
-
-
 
 ReactDOM.render(
   <Router>

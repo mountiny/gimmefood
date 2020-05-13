@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import arrayMove from 'array-move';
 
 // Components
@@ -8,7 +8,6 @@ import AdminNewProductBlock from './AdminNewProductBlock.jsx'
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
 
 // Hooks
-import useCounter from '../hooks/counterHook'
 import useField from '../hooks/fieldHook'
 
 const CategoryBlock = ({
@@ -22,8 +21,6 @@ const CategoryBlock = ({
     onDeleteCategory,
     onPictureClick
   }) => {
-  // const counter = useCounter(max || 30)
-  console.log('Category: ', category)
 
   const [open, setOpen] = useState(false)
   const [hide, setHide] = useState(false)

@@ -3,7 +3,6 @@ const webpack = require('webpack')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
-const MakeDirWebpackPlugin = require('make-dir-webpack-plugin');
 
 const config = (env, argv) => {
 
@@ -75,13 +74,12 @@ const config = (env, argv) => {
       }, {
           from: path.resolve(__dirname, 'src/assets/styles'),
           to: path.resolve(__dirname, 'build/assets/styles')
-      }
+      }, {
+        from: path.resolve(__dirname, 'public/_redirects'),
+        to: path.resolve(__dirname, 'build/_redirects'),
+        toType: 'file'
+       }
       ])
-      // new MakeDirWebpackPlugin({
-      //   dirs: [
-      //     { path: path.resolve(__dirname, 'build/assets/uploads') }
-      //   ]
-      // })
     ]
   }
 }
