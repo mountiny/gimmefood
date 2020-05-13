@@ -174,10 +174,13 @@ const Home = () => {
             </div>
       
             <Link 
-              to={amount !== 0 ? "/order": ""} 
+              to={amount !== 0 ? `${slug}/order` : ""} 
               className="continue-btn h-button h-pointer h-rounded"
-              onClick={() => {
-                if (amount === 0) alert("You have not selected any products.")
+              onClick={(e) => {
+                if (amount === 0) {
+                  e.preventDefault()
+                  alert("You have not selected any products.")
+                } 
               }}>
               Continue
             </Link>
@@ -224,7 +227,7 @@ const Home = () => {
                 {categories.map((category, i) => {
                   return (
                     <CategoryWrapper
-                      key={i}
+                      key={`category-wrapper-${category.id}`}
                       category={category}
                       showPictureModal={(pic) => showPictureModal(pic)}
                       handleItemAdded={(price, id) => handleItemAdded(price, id)}

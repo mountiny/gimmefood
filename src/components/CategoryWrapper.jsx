@@ -12,7 +12,7 @@ const CategoryWrapper = ({ category, showPictureModal, handleItemAdded, handleIt
         {category.products.map((product, i) => {
           return (
             <Product
-              key={i}
+              key={`product-${product.id}`}
               name={product.name}
               price={parseFloat(product.price/100).toFixed(2)}
               picture={product.image}

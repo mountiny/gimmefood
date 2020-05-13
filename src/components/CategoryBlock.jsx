@@ -121,7 +121,7 @@ const CategoryBlock = ({
                   key={`item-${prod.id}`} 
                   index={j}>
                   <AdminProductBlock 
-                    key={j} 
+                    key={`admin-item-${prod.id}`} 
                     className="admin-block h-block h-rounded admin-product__block" 
                     product={prod}
                     category={category}
@@ -138,7 +138,7 @@ const CategoryBlock = ({
                   key={`item-${prod.id}`} 
                   index={j}>
                   <AdminProductBlock 
-                    key={j} 
+                    key={`admin-item-${prod.id}`} 
                     className="admin-block h-block h-rounded admin-product__block" 
                     product={prod}
                     category={category}

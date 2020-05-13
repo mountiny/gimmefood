@@ -3,7 +3,7 @@ import {CardElement, useStripe, useElements} from '@stripe/react-stripe-js';
 import axios from 'axios'
 import '../assets/styles/main.scss'
 import { IMAGES } from '../config'
-import { Link, useHistory } from "react-router-dom"
+import { Link, useHistory, useParams } from "react-router-dom"
 import productService from '../services/products'
 import categoriesService from '../services/categories'
 import resetDB from '../services/resetDB'

@@ -244,7 +244,7 @@ const Menu = ({user}) => {
                           index={i}>
                           <CategoryBlock
                             className=""
-                            key={i}
+                            key={`category-block-${cat.id}`}
                             category={cat}
                             showingActive={showActive}
                             onDeleteProduct={(el) => handleProductDeletion(el)}
@@ -264,7 +264,7 @@ const Menu = ({user}) => {
                           index={i}>
                             <CategoryBlock
                               className=""
-                              key={i}
+                              key={`category-block-${cat.id}`}
                               category={cat}
                               showingActive={showActive}
                               onDeleteProduct={(el) => handleProductDeletion(el)}
