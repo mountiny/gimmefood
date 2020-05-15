@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from 'react'
 // Components
 import ProductForm from './ProductForm.jsx'
 import {SortableHandle} from 'react-sortable-hoc';
+import AdminActionButton from './AdminActionButton.jsx';
 
 // Hooks
 import useCounter from '../hooks/counterHook'
@@ -11,6 +12,9 @@ import useField from '../hooks/fieldHook'
 import useImageField from '../hooks/imageFieldHook'
 import { compileFunction } from 'vm'
 
+// Icons
+import DeleteIcon from './icons/DeleteIcon.jsx'
+import EditIcon from './icons/EditIcon.jsx';
 
 const AdminProductBlock = ({
     className, 
@@ -140,6 +144,7 @@ const AdminProductBlock = ({
           product_image={product_image.value}
           deleteImage={() => deleteImage()}
           showPictureModal={(product) => onPictureClick(product)}
+          onDeleteProduct={() => deleteProduct()}
           active={active}
           onCloseEdit={() =>closeEdit()}
         />
@@ -159,8 +164,12 @@ const AdminProductBlock = ({
               </div>)}
               
               <div className="admin-block__actions">
-                <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__edit" onClick={editProduct}>Edit</button>
-                <button className="admin-product__btn admin-action__btn h-btn-padding h-button h-rounded admin-product__delete" onClick={deleteProduct}>Delete</button>
+                <AdminActionButton className='h-button h-rounded' handleClick={editProduct}>
+                  <EditIcon />
+                </AdminActionButton> 
+                {/* <AdminActionButton className='h-button h-rounded' handleClick={deleteProduct}>
+                  <DeleteIcon />
+                </AdminActionButton>  */}
               </div>
             </div>
           </div>

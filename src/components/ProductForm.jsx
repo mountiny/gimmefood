@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react'
 
 // Components
-import PictureModal from './PictureModal.jsx'
+import AdminActionButton from './AdminActionButton.jsx';
+
+// Icons
+import DeleteIcon from './icons/DeleteIcon.jsx'
 
 const ProductForm = ({
   product,
@@ -23,6 +26,7 @@ const ProductForm = ({
   product_image,
   deleteImage,
   showPictureModal,
+  onDeleteProduct,
   active,
   onCloseEdit
 }) => {
@@ -61,7 +65,12 @@ const ProductForm = ({
           onClick={handleActiveChange}></div>
           <div className="admin-block__active-label">Active</div>
         </div>
-        <button className="h-btn-padding h-button h-pointer h-rounded" onClick={closeEdit}>Close</button>
+        <div className="h-row">
+          <AdminActionButton className='h-button h-rounded' handleClick={onDeleteProduct}>
+            <DeleteIcon />
+          </AdminActionButton>
+          <button className="h-btn-padding h-button h-pointer h-rounded h-margin-left" onClick={closeEdit}>Close</button>
+        </div>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="form-line">

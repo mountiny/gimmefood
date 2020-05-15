@@ -222,7 +222,7 @@ const Menu = ({user}) => {
 
             <div className="admin-categories__cont">
 
-            <div className={newCategory ? "admin-block h-rounded h-block admin-category__new" : "admin-block h-block-open h-text-center h-700 h-pointer h-rounded h-block admin-category_block admin-category__new"} 
+            <div className={newCategory ? "admin-block h-rounded h-block h-block-open admin-category__new" : "admin-block h-text-center h-700 h-pointer h-rounded h-block admin-category_block admin-category__new"} 
                 onClick={()=>{if (!newCategory) setNewCategory(true)}}>
                 {newCategory ? 
                   <CategoryForm

@@ -273,7 +273,7 @@ $admin-height: 76px;
   @include justify-content(space-between);
   @include align-items(center);
   margin: $pad 0px;
-  @media screen and (max-width: $mobile-x) {
+  @media screen and (max-width: $mobile-se) {
     @include flex-direction(column);
     @include align-items(flex-start);
     .category-heading__wrapper {
@@ -330,6 +330,23 @@ $admin-height: 76px;
   &:hover {
     background-color: $bgHover;
   }
+}
+.admin-action__button {
+  background-color: $bgLight;
+  margin-left: $pad/2;
+  @include display_flexbox();
+  @include justify-content(center);
+  @include align-items(center);
+  height: 2.4rem;
+  @include prefix(transition, (background-color 0.3s $curve), webkit ms o);
+  &:hover {
+    background-color: $bgHover;
+  }
+}
+.admin-icon {
+  fill: $text;
+  position: relative;
+  height: 2.3rem;
 }
 .admin-image__upload {
   display: grid;

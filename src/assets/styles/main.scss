@@ -668,7 +668,8 @@ h4.category-name {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
   background-color: transparentize($bgLight, 0.8);
   z-index: 1000;
   -webkit-backdrop-filter: saturate(140%) blur(8px);

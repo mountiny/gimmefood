@@ -6,9 +6,15 @@ import arrayMove from 'array-move';
 import AdminProductBlock from './AdminProductBlock.jsx'
 import AdminNewProductBlock from './AdminNewProductBlock.jsx'
 import {SortableContainer, SortableElement, SortableHandle} from 'react-sortable-hoc';
+import AdminActionButton from './AdminActionButton.jsx';
 
 // Hooks
 import useField from '../hooks/fieldHook'
+
+// Icons
+import DeleteIcon from './icons/DeleteIcon.jsx'
+import EditIcon from './icons/EditIcon.jsx';
+import HideIcon from './icons/HideIcon.jsx';
 
 const CategoryBlock = ({
     className, 
@@ -78,7 +84,12 @@ const CategoryBlock = ({
               onClick={()=>setActive(!active)}></div>
               <div className="admin-block__active-label">Active</div>
             </div>
-            <button className="h-btn-padding h-button h-pointer h-rounded" onClick={()=>{if (open) closeEdit()}}>Close</button>
+            <div className="h-row">
+              <AdminActionButton className='h-button h-rounded' handleClick={() => deleteCategory()}>
+                <DeleteIcon />
+              </AdminActionButton>
+              <button className="h-btn-padding h-button h-pointer h-rounded h-margin-left" onClick={()=>{if (open) closeEdit()}}>Close</button>
+            </div>
           </div>
           <form onSubmit={saveCategory}>
             <div className="form-line">
@@ -104,9 +115,14 @@ const CategoryBlock = ({
             <h3 className="category-heading"><DragHandle />{category.name}</h3>
           </div>
           <div className="admin-block__actions">
-            <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__hide" onClick={() => setHide(!hide)}>{hide ? "Show" : "Hide"}</button>
-            <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__edit" onClick={() => editCategory()}>Edit</button>
-            <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__delete" onClick={() => deleteCategory()}>Delete</button>
+            {/* <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__hide" onClick={() => setHide(!hide)}>{hide ? "Show" : "Hide"}</button> */}
+            {/* <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__edit" onClick={() => editCategory()}>Edit</button> */}
+            <AdminActionButton className='h-button h-rounded' handleClick={() => setHide(!hide)}>
+              <HideIcon />
+            </AdminActionButton>
+            <AdminActionButton className='h-button h-rounded' handleClick={() => editCategory()}>
+              <EditIcon />
+            </AdminActionButton>
           </div>
         </div>
        }

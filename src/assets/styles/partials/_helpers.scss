@@ -65,6 +65,7 @@
   display: block;
   background-color: $text;
   color: $bg;
+  border: 0;
   cursor: pointer;
   @include prefix(transition, (background-color 0.3s $curve), webkit ms o);
   &:hover {
@@ -130,4 +131,12 @@
 }
 .h-invalid {
   border: 2px solid $no !important
+}
+.h-row {
+  @include display_flexbox();
+  // @include justify-content(space-between);
+  @include align-items(center);
+}
+.h-margin-left {
+  margin-left: $pad/2;
 }
