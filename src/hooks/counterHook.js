@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 
-const useCounter = (max) => {
-  const [value, setValue] = useState(0)
+const useCounter = (max, initial = 0) => {
+  const [value, setValue] = useState(initial)
 
   const increase = () => {
     console.log(max)

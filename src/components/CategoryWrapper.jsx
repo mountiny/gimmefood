@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Product from './Product.jsx'
 import UnderlineText from './UnderlineText.jsx'
 
-const CategoryWrapper = ({ category, showPictureModal, handleItemAdded, handleItemRemoved, children }) => {
+const CategoryWrapper = ({ category, basket, showPictureModal, handleItemAdded, handleItemRemoved, children }) => {
 
   return (
     <div className="category-wrapper">
@@ -14,17 +14,22 @@ const CategoryWrapper = ({ category, showPictureModal, handleItemAdded, handleIt
       <div className="products-container">
 
         {category.products.map((product, i) => {
+          
+          const from_basket = basket[product.id] ? basket[product.id] : 0
+
           return (
             <Product
               key={`product-${product.id}`}
+              product={product}
+              inBasket={from_basket}
               name={product.name}
               price={parseFloat(product.price/100).toFixed(2)}
               picture={product.image}
               description_short={product.description_short}
               stock={product.stock}
               onPictureClick={() => showPictureModal(product)}
-              onItemAdded={(price, id) => handleItemAdded(price, id)}
-              onItemRemoved={(price, id) => handleItemRemoved(price,id)}>
+              onItemAdded={(prod) => handleItemAdded(prod)}
+              onItemRemoved={(prod) => handleItemRemoved(prod)}>
             </Product>
           )
         })}

@@ -4,12 +4,10 @@ import React, { useState, useEffect, useRef } from 'react'
 import ProductForm from './ProductForm.jsx'
 
 // Hooks
-import useCounter from '../hooks/counterHook'
 import useField from '../hooks/fieldHook'
 import useImageField from '../hooks/imageFieldHook'
 
 const AdminNewProductBlock = ({className, category, onAddProduct, onPictureClick}) => {
-  // const counter = useCounter(max || 30)
 
   const [open, setOpen] = useState(false)
 

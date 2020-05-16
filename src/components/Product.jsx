@@ -3,7 +3,9 @@ import useCounter from '../hooks/counterHook'
 import { IMAGES } from '../config'
 
 const Product = ({
-    name, 
+    product,
+    inBasket,
+    name,
     price, 
     picture, 
     description_short,
@@ -13,7 +15,7 @@ const Product = ({
     onItemRemoved
   }) => {
 
-  const counter = useCounter(stock || 30)
+  const counter = useCounter(stock, inBasket)
 
   const handleFirstAddition = () => {
     if (counter.value === 0) {
@@ -23,13 +25,11 @@ const Product = ({
   }
 
   const addItem = () => {
-    console.log("Price in Product:", price)
-    onItemAdded(price, name)
+    onItemAdded(product)
   }
   const removeItem = () => {
     if (counter.value !== 0) {
-      console.log("Price to be removed in Product:", price)
-      onItemRemoved(price, name)
+      onItemRemoved(product)
     }
   }
 

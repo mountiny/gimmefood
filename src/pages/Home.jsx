@@ -28,26 +28,17 @@ const useProducts = (url) => {
   return products
 }
 
-const populateDB = async () => {
-  // // console.log(db)
-  // // const users = db.users
-  // // const products = db.products
-  // // const categories = db.categories
-  // setDb(db)
-
-  // console.log(users, products, categories)
-}
-
-
 const Home = () => {
 
   const slug = useParams().business
+  const LSOrderKey = `${slug}-order`
+  const LSDataKey = `${slug}-data`
 
   const [counter, setCounter] = useState(0)
   const [price, setPrice] = useState(0)
   const [amount, setAmount] = useState(0)
   const [modalPic, setModalPic] = useState("")
-  const [basket, setBasket] = useState({})
+  const [basket, setBasket] = useState(window.localStorage.getItem(LSOrderKey) ? JSON.parse(window.localStorage.getItem(LSOrderKey)) : {})
   const [productShown, setProductShown] = useState({
     name: "Sourdough Bread",
     description: "This is a description of this lovely and crunchy bread.",
@@ -62,8 +53,8 @@ const Home = () => {
   })
   const [values, setValues] = useState([])
   const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState(window.localStorage.getItem(`${slug}-data`) ? JSON.parse(window.localStorage.getItem(`${slug}-data`)).categories : null)
-  const [user, setUser] = useState(window.localStorage.getItem(`${slug}-data`) ? JSON.parse(window.localStorage.getItem(`${slug}-data`)) : null)
+  const [categories, setCategories] = useState(window.localStorage.getItem(LSDataKey) ? JSON.parse(window.localStorage.getItem(LSDataKey)).categories : null)
+  const [user, setUser] = useState(window.localStorage.getItem(LSDataKey) ? JSON.parse(window.localStorage.getItem(LSDataKey)) : null)
   const [order, setOrder] = useState({})
   const [modal, setModal] = useState(false)
 
@@ -95,22 +86,20 @@ const Home = () => {
 
   const saveDataToLS = (cat) => {
     window.localStorage.setItem(
-      `${slug}-data`, JSON.stringify(cat)
+      LSDataKey, JSON.stringify(cat)
     )
   }
 
   const getOrder = () => {
-    const LSKey = `${slug}-order`
-    const new_order = JSON.parse(window.localStorage.getItem(LSKey))
+    const new_order = JSON.parse(window.localStorage.getItem(LSOrderKey))
     if (new_order) {
       setOrder(order)
     }
   }
 
-  const saveOrder = () => {
-    const LSKey = `${slug}-order`
-    const order = {"order": []}
-    window.localStorage.setItem(LSKey, JSON.stringify(order));
+  const saveOrder = (temp_order) => {
+    // const order = {"order": order}
+    window.localStorage.setItem(LSOrderKey, JSON.stringify(temp_order));
   }
 
   const showPictureModal = (product) => {
@@ -118,34 +107,37 @@ const Home = () => {
     setModal(true)
   }
 
-  const handleItemAdded = (prod_price, id) => {
-    const value = parseFloat(prod_price);
-
-    // console.log('id of the item: ', id)
+  const handleItemAdded = (product) => {
+    const value = parseFloat(parseFloat(product.price/100).toFixed(2));
 
     setPrice(price+value)
     setAmount(amount+1)
-    if(basket[id]) {
-      const old_value = basket[id]
-      const new_basket = {...basket, [id]: old_value+1}
+
+    if(basket[product.id]) {
+      const old_value = basket[product.id]
+      const new_basket = {...basket, [product.id]: old_value+1}
       setBasket(new_basket)
+      saveOrder(new_basket)
 
     } else {
-      const new_basket = {...basket, [id]: 1}
+      const new_basket = {...basket, [product.id]: 1}
       setBasket(new_basket)
+      saveOrder(new_basket)
     }
-    // console.log("Product added to basket: ", basket)
   }
 
-  const handleItemRemoved = (prod_price, id) => {
-    const value = parseFloat(prod_price);
+  const handleItemRemoved = (product) => {
+    const value = parseFloat(parseFloat(product.price/100).toFixed(2));
     if (amount !== 0) setPrice(price-value)
     if (amount !== 0) setAmount(amount-1)
-    if(basket[id]) {
-      const old_value = basket[id]
-      const new_basket = {...basket, [id]: old_value-1}
+    if(basket[product.id]) {
+      const old_value = basket[product.id]
+      const new_basket = {...basket, [product.id]: old_value-1}
+      Object.keys(new_basket).forEach(key => {
+        if (new_basket[key] === 0) delete new_basket[key]
+      });
       setBasket(new_basket)
-
+      saveOrder(new_basket)
     }
   }
 
@@ -167,7 +159,8 @@ const Home = () => {
                 onClose={() => {setModal(false)}}>
       
               </PictureModal>
-            ): fromTop.y > 170 && (<div className="total-container">
+            )
+            : (fromTop.y > 170 || Object.entries(basket).length !== 0) && (<div className="total-container">
             <div className="total-line">
               <div className="total-word">Total:</div>
               <div className="total-amount">{amount === 0 ? null : amount === 1 ? `${amount} item` : `${amount} items` }</div>
@@ -230,9 +223,10 @@ const Home = () => {
                     <CategoryWrapper
                       key={`category-wrapper-${category.id}`}
                       category={category}
+                      basket={basket}
                       showPictureModal={(pic) => showPictureModal(pic)}
-                      handleItemAdded={(price, id) => handleItemAdded(price, id)}
-                      handleItemRemoved={(price, id) => handleItemRemoved(price, id)}
+                      handleItemAdded={(prod) => handleItemAdded(prod)}
+                      handleItemRemoved={(prod) => handleItemRemoved(prod)}
                     />
                   )
                 })}
