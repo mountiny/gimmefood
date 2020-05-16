@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react'
 
+// Components
 import Product from './Product.jsx'
+import UnderlineText from './UnderlineText.jsx'
 
 const CategoryWrapper = ({ category, showPictureModal, handleItemAdded, handleItemRemoved, children }) => {
 
   return (
     <div className="category-wrapper">
-      <h4 className="category-name">{ category.name }</h4>
+      <UnderlineText className='h-margin-bottom'>
+        <h4 className="category-name h-offset-text h-700">{ category.name }</h4>
+      </UnderlineText>
       <div className="products-container">
 
         {category.products.map((product, i) => {

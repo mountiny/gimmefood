@@ -185,7 +185,7 @@ html, body {
   position: relative;
   display: block;
 }
-.business_subheading__wrapper {
+.business-subheading__wrapper {
   position: relative;
   display: block;
 }
@@ -225,15 +225,16 @@ h1 .welcome {
 .block-heading {
   // padding: 20px 0px;
   z-index: 10;
+  // font-size: 2.6rem;
   font-size: 2.6rem;
   position: relative;
   display: block;
 }
 
+
 h4.category-name {
-  font-weight: 400;
   font-style: italic;
-  font-size: 1.4rem;
+  font-size: 1.7rem;
 }
 
 // Category

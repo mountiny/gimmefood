@@ -14,6 +14,7 @@ import useScroll from '../hooks/scrollHook'
 // Components
 import PictureModal from '../components/PictureModal.jsx'
 import CategoryWrapper from '../components/CategoryWrapper.jsx'
+import UnderlineText from '../components/UnderlineText.jsx'
 
 smoothscroll.polyfill();
 
@@ -190,16 +191,16 @@ const Home = () => {
               
               <div className="block intro-block">
                 <div className="business-header h-margin-bottom ">
-                  <div className="business-name__wrapper h-offset-wrapper h-offset-bg">
+                  <UnderlineText className='business-name__wrapper'>
                     <h1 className="business-name h-700">{user.name}</h1>
-                  </div>
+                  </UnderlineText>
                   <div className="logo-wrapper">
                     <img className="logo h-circle" src={STATIC + user.image} ref={logoRef}/>
                   </div>
                 </div>
-                <div className="business_subheading__wrapper h-offset-bg h-margin-bottom">
+                <UnderlineText className='business-subheading__wrapper h-margin-bottom'>
                   <h2 className="business-subheading h-700">{user.subheading}</h2>
-                </div>
+                </UnderlineText>
       
                 <div className="company-desc h-rounded">
                   {user.business_description}
@@ -220,9 +221,9 @@ const Home = () => {
               </div>
               <div ref={productRef} className="h-divider"></div>
               <div className="block block__products">
-                <div className="block-heading__wrapper h-offset-bg h-margin-bottom">
-                  <h3 className="block-heading h-700">Menu</h3>
-                </div>
+                {/* <UnderlineText className='block-heading__wrapper h-margin-bottom'> */}
+                  <h3 className="block-heading h-700 h-margin-bottom">Menu</h3>
+                {/* </UnderlineText> */}
 
                 {categories.map((category, i) => {
                   return (
