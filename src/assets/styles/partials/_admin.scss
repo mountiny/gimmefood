@@ -32,6 +32,7 @@ $admin-height: 76px;
   grid-template-columns: 33% auto 33%;
   grid-template-rows: auto;
 }
+
 .admin-btn {
   position: relative;
   display: block;
@@ -43,7 +44,7 @@ $admin-height: 76px;
   @include align-items(center);
 
   &:hover {
-    img {
+    svg {
       @include prefix(transform, scale(1.2), webkit ms o);
     }
   }
@@ -57,10 +58,23 @@ $admin-height: 76px;
   }
 
 }
-.page-heading {
+.menu-icon {
+  fill: $text;
   position: relative;
+  height: 2.4rem;
+  margin-bottom: $pad/2;
+  @include prefix(transition, (transform 0.3s $curve), webkit ms o);
+  @include prefix(transform, scale(1), webkit ms o);
+}
+.admin-heading__wrapper {
   margin-top: 3*$pad;
   margin-bottom: 2*$pad;
+}
+.page-heading {
+  position: relative;
+  display: inline-block;
+  z-index: 10;
+ 
 }
 .orders-filtering {
   position: relative;
@@ -236,7 +250,8 @@ $admin-height: 76px;
   line-height: 1.6rem;
 }
 .admin-products__cont {
-  margin-bottom: $pad*2;
+  margin: $pad*2 0px;
+
 }
 .admin-block__active {
   display: inline-block;
@@ -273,6 +288,11 @@ $admin-height: 76px;
   @include justify-content(space-between);
   @include align-items(center);
   margin: $pad 0px;
+  padding: 0px 16px 0px 21px;
+  @media screen and (max-width: $mobile-x) {
+    padding: 0px 9px 0px 14px;
+  }
+
   @media screen and (max-width: $mobile-se) {
     @include flex-direction(column);
     @include align-items(flex-start);
@@ -322,9 +342,9 @@ $admin-height: 76px;
   height: auto;
   @include prefix(transition, (border 0.3s $curve, height 0.3s $curve, background-color 0.3s $curve), webkit ms o);
   &.admin-active__selected {
-    background-color: $yes;
+    background-color: $productSelected;
     &:hover {
-      background-color: $yes;
+      background-color: $productSelected;
     }
   }
   &:hover {
@@ -342,11 +362,17 @@ $admin-height: 76px;
   &:hover {
     background-color: $bgHover;
   }
+  &.hidden {
+    background-color: $text;
+    .admin-icon {
+      fill: $bgLight;
+    }
+  }
 }
 .admin-icon {
   fill: $text;
   position: relative;
-  height: 2.3rem;
+  height: 1.9rem;
 }
 .admin-image__upload {
   display: grid;

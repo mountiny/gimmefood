@@ -117,7 +117,7 @@ const CategoryBlock = ({
           <div className="admin-block__actions">
             {/* <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__hide" onClick={() => setHide(!hide)}>{hide ? "Show" : "Hide"}</button> */}
             {/* <button className="admin-action__btn h-rounded h-button h-btn-padding admin-product__edit" onClick={() => editCategory()}>Edit</button> */}
-            <AdminActionButton className='h-button h-rounded' handleClick={() => setHide(!hide)}>
+            <AdminActionButton className={'h-button h-rounded ' + (hide ? 'hidden' : '')} handleClick={() => setHide(!hide)}>
               <HideIcon />
             </AdminActionButton>
             <AdminActionButton className='h-button h-rounded' handleClick={() => editCategory()}>

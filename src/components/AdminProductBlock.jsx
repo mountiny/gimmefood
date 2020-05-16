@@ -7,13 +7,10 @@ import {SortableHandle} from 'react-sortable-hoc';
 import AdminActionButton from './AdminActionButton.jsx';
 
 // Hooks
-import useCounter from '../hooks/counterHook'
 import useField from '../hooks/fieldHook'
 import useImageField from '../hooks/imageFieldHook'
-import { compileFunction } from 'vm'
 
 // Icons
-import DeleteIcon from './icons/DeleteIcon.jsx'
 import EditIcon from './icons/EditIcon.jsx';
 
 const AdminProductBlock = ({

@@ -177,8 +177,8 @@ const Menu = ({user}) => {
     const reorderedCategories = arrayMove(categories, oldIndex, newIndex)
 
     try {
-      const response = await usersService.updateCategories(reorderedCategories)
       setCategories(reorderedCategories)
+      const response = await usersService.updateCategories(reorderedCategories)
       
     } catch (e) {
       console.log("Creating new category error: ", e)
@@ -202,7 +202,9 @@ const Menu = ({user}) => {
         <AdminMenu />
 
         <div className="container container-admin container__menu">
-            <h2 className="page-heading h-700">Your Menu</h2>
+            <div className='admin-heading__wrapper h-offset-wrapper h-offset-bg'>
+              <h2 className="page-heading h-700">Your Menu</h2>
+            </div>
 
             <div className="admin-menu__active-wrapper h-rounded">
               <div className={showActive ? 

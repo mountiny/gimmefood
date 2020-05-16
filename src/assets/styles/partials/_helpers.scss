@@ -90,10 +90,14 @@
   margin: $pad auto;
 
 }
+.h-offset-wrapper {
+  display: inline-block;
+  
+}
 .h-offset-bg {
   z-index: 10;
   position: relative;
-  display: block;
+  // display: block;
   &:after {
     content: '';
     position: absolute;

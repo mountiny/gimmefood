@@ -190,7 +190,7 @@ const Home = () => {
               
               <div className="block intro-block">
                 <div className="business-header h-margin-bottom ">
-                  <div className="business-name__wrapper h-offset-bg">
+                  <div className="business-name__wrapper h-offset-wrapper h-offset-bg">
                     <h1 className="business-name h-700">{user.name}</h1>
                   </div>
                   <div className="logo-wrapper">

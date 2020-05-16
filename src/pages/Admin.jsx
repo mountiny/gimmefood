@@ -27,7 +27,9 @@ const Admin = ({user}) => {
         <AdminMenu />
 
         <div className="container container-admin container__orders">
-          <h2 className="page-heading h-700">Orders</h2>
+          <div className='admin-heading__wrapper h-offset-wrapper h-offset-bg'>
+            <h2 className="page-heading h-700">Your Orders</h2>
+          </div>
 
           <div className="orders-filtering">
             <div className={orderFilter === 0 ? "orders-filter h-rounded h-pointer selected" : "orders-filter h-rounded h-pointer"}

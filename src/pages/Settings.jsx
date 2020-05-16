@@ -25,9 +25,11 @@ const Settings = ({user, changeUser}) => {
         <AdminMenu />
   
         <div className="container container-admin container__settings">
+          <div className='admin-heading__wrapper h-offset-wrapper h-offset-bg'>
             <h2 className="page-heading h-700">Settings</h2>
-            <Link className="h-button h-full-btn h-rounded" to="/admin/settings/edit">Edit profile</Link>
-            <button className="h-button h-full-btn h-rounded" onClick={handleLogout}>Log out</button>
+          </div>
+          <Link className="h-button h-full-btn h-rounded" to="/admin/settings/edit">Edit profile</Link>
+          <button className="h-button h-full-btn h-rounded" onClick={handleLogout}>Log out</button>
         </div>
           
    
