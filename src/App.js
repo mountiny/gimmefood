@@ -14,12 +14,12 @@ import usersService from './services/users'
 // Components
 
 // Stripe
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+// import {Elements} from '@stripe/react-stripe-js';
+// import {loadStripe} from '@stripe/stripe-js';
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp');
+// // Make sure to call `loadStripe` outside of a component’s render to avoid
+// // recreating the `Stripe` object on every render.
+// const stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp');
 
 smoothscroll.polyfill();
 
@@ -51,9 +51,9 @@ const App = ({LSUser}) => {
 
   return (
     <userContext.Provider value={value}>
-      <Elements stripe={stripePromise}>
+      {/* <Elements stripe={stripePromise}> */}
         <Main/>
-      </Elements>
+      {/* </Elements> */}
     </userContext.Provider>
   )
 

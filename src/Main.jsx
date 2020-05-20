@@ -13,7 +13,7 @@ import Admin from './pages/Admin.jsx'
 import Menu from './pages/Menu.jsx'
 import Settings from './pages/Settings.jsx'
 import EditProfile from './pages/EditProfile.jsx'
-import OrderPage from './pages/OrderPage.jsx'
+import OrderPageWrapper from './pages/OrderPageWrapper.jsx'
 import Login from './pages/Login.jsx'
 import Signup from './pages/Signup.jsx'
 import LandingPage from './pages/LandingPage.jsx'
@@ -26,13 +26,10 @@ import userContext from './services/userContext'
 // Components
 import ProtectedRoute from './components/ProtectedRoute.jsx'
 
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
-
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp');
+// const stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp');
 
 smoothscroll.polyfill();
 
@@ -42,7 +39,7 @@ const Main = (props) => {
   const [stripeId, setStripeId] = useState('')
 
   return (
-    <Elements stripe={stripePromise}>
+    // <Elements stripe={stripePromise}>
       <userContext.Consumer>
         {({user, changeUser}) => {
           return (
@@ -73,7 +70,8 @@ const Main = (props) => {
                 <Signup user={user} />
               </Route>
               <Route exact path="/:business/order">
-                <OrderPage stripeId={stripeId} changeStripeId={(id) => setStripeId(id)} />
+                <OrderPageWrapper />
+                {/* <OrderPage stripeId={stripeId} changeStripeId={(id) => setStripeId(id)} /> */}
               </Route>
               <Route exact path="/:business">
                 <Home stripeId={stripeId} changeStripeId={(id) => setStripeId(id)} />
@@ -85,7 +83,7 @@ const Main = (props) => {
           </div>
         )}}
       </userContext.Consumer>
-    </Elements>
+    // </Elements>
   )
 }
 

@@ -10,9 +10,9 @@ const getStripeSecred = async () => {
 };
 
 const getIntent = async (user) => {
-  const config = {
-    headers: { 'Stripe-Account': user.stripe_id },
-  }
+  // const config = {
+  //   headers: { 'Stripe-Account': user.stripe_id },
+  // }
 
   const response = await axios.post(`${BACKEND_URL}stripe/create-intent`, user, {});
   console.log('Intent response: ', response)
@@ -21,7 +21,20 @@ const getIntent = async (user) => {
   // Call stripe.confirmCardPayment() with the client secret.
 };
 
+const getAccontId = async (user) => {
+  // const config = {
+  //   headers: { 'Stripe-Account': user.stripe_id },
+  // }
+
+  const response = await axios.post(`${BACKEND_URL}stripe/get-account-id`, user, {});
+  console.log('Intent response: ', response)
+  // const responseJson = await response.json();
+  return response.data//responseJson.client_secret
+  // Call stripe.confirmCardPayment() with the client secret.
+};
+
 export default {
   getStripeSecred,
-  getIntent
+  getIntent,
+  getAccontId
 }

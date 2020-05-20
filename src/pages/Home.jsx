@@ -30,6 +30,8 @@ const useProducts = (url) => {
 
 const Home = ({stripeId, changeStripeId}) => {
 
+  console.log('Start of home page')
+
   const slug = useParams().business
   const LSBasketKey = `${slug}-basket`
   const LSPriceKey = `${slug}-price`

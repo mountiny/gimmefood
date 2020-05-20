@@ -3,7 +3,7 @@ import {CardElement} from '@stripe/react-stripe-js';
 
 const CardSection = ({className, options}) => {
   return (
-    <CardElement className={className} options={options} />
+    <CardElement id='card' className={className} options={options} />
   )
 }
 
