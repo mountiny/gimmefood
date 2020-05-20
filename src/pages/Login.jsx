@@ -13,6 +13,7 @@ import useField from '../hooks/fieldHook'
 
 // Components
 import LoginForm from '../components/LoginForm.jsx'
+import AppFooter from '../components/AppFooter.jsx'
 
 
 const Login = ({user, changeUser}) => {
@@ -78,11 +79,7 @@ const Login = ({user, changeUser}) => {
               handleSubmit={handleLogin}
             />
         </div>
-        <div className="block footer">
-          <div>
-            Created by <a href="https://www.mountiny.com" target="_blank">Mountiny - Vit Horacek</a>
-          </div>
-        </div>
+       <AppFooter />
       </div>
     )
   }

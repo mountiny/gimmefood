@@ -33,6 +33,21 @@ const getInfo = async (userToken) => {
   return response.data
 }
 
+const getStripeId = async (userToken) => {
+  const config = {
+    headers: { Authorization: `bearer ${userToken}` },
+  }
+  const response = await axios.post(`${baseUrl}/stripe-id`, {}, config)
+  return response.data
+}
+const disconnectStripe = async (userToken) => {
+  const config = {
+    headers: { Authorization: `bearer ${userToken}` },
+  }
+  const response = await axios.post(`${baseUrl}/disconnect-stripe`, {}, config)
+  return response.data
+}
+
 const create = async newObject => {
   const response = await axios.post(baseUrl, newObject)
   return response.data
@@ -62,6 +77,8 @@ export default {
   getCategories,
   getCategoriesMenu,
   getInfo,
+  getStripeId,
+  disconnectStripe,
   create,
   update,
   updateCategories,

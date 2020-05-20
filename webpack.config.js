@@ -9,10 +9,14 @@ const config = (env, argv) => {
   const backend_url = argv.mode === 'production'
     ? 'http://www.bontakeout.com/api/'
     : 'http://localhost:3001/api/'
-  
-    const static = argv.mode === 'production'
-    ? 'http://www.bontakeout.com/uploads/'
-    : 'http://localhost:3001/uploads/'
+
+  const static = argv.mode === 'production'
+  ? 'http://www.bontakeout.com/uploads/'
+  : 'http://localhost:3001/uploads/'
+
+  const clientID = argv.mode === 'production'
+  ? 'ca_HINYqIArqUY0mdevhravwuAku8PP0elE'
+  : 'ca_HINYqIArqUY0mdevhravwuAku8PP0elE'
 
   return {
     entry: ['@babel/polyfill', './src/index.js'],
@@ -60,7 +64,8 @@ const config = (env, argv) => {
     plugins: [
       new webpack.DefinePlugin({
         BACKEND_URL: JSON.stringify(backend_url),
-        STATIC: JSON.stringify(static)
+        STATIC: JSON.stringify(static),
+        STRIPE_CLIENT_ID: JSON.stringify(clientID),
       }),
       new MiniCssExtractPlugin({
           filename: `src/styles/main.css`

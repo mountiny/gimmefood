@@ -4,7 +4,6 @@ const useCounter = (max, initial = 0) => {
   const [value, setValue] = useState(initial)
 
   const increase = () => {
-    console.log(max)
     value !== max ? setValue(value + 1) : alert(`Unfortunately, we do not have more in stock.`)
   }
 

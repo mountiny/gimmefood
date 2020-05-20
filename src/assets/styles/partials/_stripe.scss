@@ -23,6 +23,9 @@
   // border-radius: 4px;
 
 }
+.ElementsApp .InputElement {
+  background-color: $bg;
+}
 
 .StripeElement--focus {
   box-shadow: 0 1px 3px 0 $textLight;
@@ -33,5 +36,5 @@
 }
 
 .StripeElement--webkit-autofill {
-  background-color: #fefde5 !important;
+  background-color: $bg !important;
 }

@@ -11,6 +11,7 @@ import useField from '../hooks/fieldHook'
 
 // Components
 import SignupForm from '../components/SignupForm.jsx'
+import AppFooter from '../components/AppFooter.jsx'
 
 
 const Signup = ({user}) => {
@@ -98,11 +99,7 @@ const Signup = ({user}) => {
               handleSubmit={handleSignup}
             />
         </div>
-        <div className="block footer">
-          <div>
-            Created by <a href="https://www.mountiny.com" target="_blank">Mountiny - Vit Horacek</a>
-          </div>
-        </div>
+        <AppFooter />
       </div>
     )
   }

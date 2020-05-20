@@ -28,17 +28,29 @@ const useProducts = (url) => {
   return products
 }
 
-const Home = () => {
+const Home = ({stripeId, changeStripeId}) => {
 
   const slug = useParams().business
-  const LSOrderKey = `${slug}-order`
+  const LSBasketKey = `${slug}-basket`
+  const LSPriceKey = `${slug}-price`
   const LSDataKey = `${slug}-data`
 
   const [counter, setCounter] = useState(0)
-  const [price, setPrice] = useState(0)
-  const [amount, setAmount] = useState(0)
+  const [price, setPrice] = useState(
+    window.localStorage.getItem(LSPriceKey) 
+    ? parseFloat(JSON.parse(window.localStorage.getItem(LSPriceKey)))
+    : 0
+  )
+  const [amount, setAmount] = useState(
+    window.localStorage.getItem(LSBasketKey) && Object.keys(JSON.parse(window.localStorage.getItem(LSBasketKey))).length !== 0
+    ? Object.values(JSON.parse(window.localStorage.getItem(LSBasketKey))).reduce((a,b) => a + b)
+    : 0
+  )
   const [modalPic, setModalPic] = useState("")
-  const [basket, setBasket] = useState(window.localStorage.getItem(LSOrderKey) ? JSON.parse(window.localStorage.getItem(LSOrderKey)) : {})
+  const [basket, setBasket] = useState(
+    window.localStorage.getItem(LSBasketKey) 
+    ? JSON.parse(window.localStorage.getItem(LSBasketKey)) 
+    : {})
   const [productShown, setProductShown] = useState({
     name: "Sourdough Bread",
     description: "This is a description of this lovely and crunchy bread.",
@@ -53,8 +65,14 @@ const Home = () => {
   })
   const [values, setValues] = useState([])
   const [products, setProducts] = useState([])
-  const [categories, setCategories] = useState(window.localStorage.getItem(LSDataKey) ? JSON.parse(window.localStorage.getItem(LSDataKey)).categories : null)
-  const [user, setUser] = useState(window.localStorage.getItem(LSDataKey) ? JSON.parse(window.localStorage.getItem(LSDataKey)) : null)
+  const [categories, setCategories] = useState(
+    window.localStorage.getItem(LSDataKey) 
+    ? JSON.parse(window.localStorage.getItem(LSDataKey)).categories 
+    : null)
+  const [user, setUser] = useState(
+    window.localStorage.getItem(LSDataKey) 
+    ? JSON.parse(window.localStorage.getItem(LSDataKey)) 
+    : null)
   const [order, setOrder] = useState({})
   const [modal, setModal] = useState(false)
 
@@ -64,6 +82,8 @@ const Home = () => {
   const logoRef = useRef(null)
 
   const fromTop = useScroll()
+
+  console.log('Initial price: ', price)
 
   // Get all products
   useEffect( () => {
@@ -91,15 +111,35 @@ const Home = () => {
   }
 
   const getOrder = () => {
-    const new_order = JSON.parse(window.localStorage.getItem(LSOrderKey))
+    const new_order = JSON.parse(window.localStorage.getItem(LSBasketKey))
+    if (!new_order) {
+      return
+    }
+
+    let all_products = []
+    categories.map((category) => {
+      all_products = [...all_products, ...category.products]
+    })
+
+    Object.keys(new_order).forEach(key => {
+      all_products.forEach(element => {
+        if (element.id === key) {
+          if (element.stock < new_order[key]) {
+            new_order[key] = element.stock
+            alert(`The product: ${element.name} is being sold quickly. Unfortunately, we had to decrease the amount of this product you have in the basket. Now, you are ordering - ${element.stock} of them - all the ones left in stock. Check out quickly.`)
+          }
+        }
+      });
+    });
     if (new_order) {
       setOrder(order)
     }
   }
 
-  const saveOrder = (temp_order) => {
+  const saveOrder = (temp_order, temp_price) => {
     // const order = {"order": order}
-    window.localStorage.setItem(LSOrderKey, JSON.stringify(temp_order));
+    window.localStorage.setItem(LSBasketKey, JSON.stringify(temp_order));
+    window.localStorage.setItem(LSPriceKey, JSON.stringify(temp_price));
   }
 
   const showPictureModal = (product) => {
@@ -108,27 +148,33 @@ const Home = () => {
   }
 
   const handleItemAdded = (product) => {
-    const value = parseFloat(parseFloat(product.price/100).toFixed(2));
+    const value = parseFloat(parseFloat(product.price/100).toFixed(2))
 
-    setPrice(price+value)
+    console.log('Price: ', price)
+    console.log('Value: ', value)
+
+    const new_price = price+value;
+    setPrice(new_price)
+    console.log('New pirce: ', new_price)
     setAmount(amount+1)
 
     if(basket[product.id]) {
       const old_value = basket[product.id]
       const new_basket = {...basket, [product.id]: old_value+1}
       setBasket(new_basket)
-      saveOrder(new_basket)
+      saveOrder(new_basket, new_price)
 
     } else {
       const new_basket = {...basket, [product.id]: 1}
       setBasket(new_basket)
-      saveOrder(new_basket)
+      saveOrder(new_basket, new_price)
     }
   }
 
   const handleItemRemoved = (product) => {
-    const value = parseFloat(parseFloat(product.price/100).toFixed(2));
-    if (amount !== 0) setPrice(price-value)
+    const value = parseFloat(parseFloat(product.price/100).toFixed(2))
+    let new_price = price-value
+    if (amount !== 0) setPrice(new_price)
     if (amount !== 0) setAmount(amount-1)
     if(basket[product.id]) {
       const old_value = basket[product.id]
@@ -137,7 +183,8 @@ const Home = () => {
         if (new_basket[key] === 0) delete new_basket[key]
       });
       setBasket(new_basket)
-      saveOrder(new_basket)
+      if (Object.keys(new_basket).length === 0) new_price = 0
+      saveOrder(new_basket, new_price)
     }
   }
 
@@ -147,6 +194,7 @@ const Home = () => {
 
     return (
       <div className="app-wrapper">
+        {console.log('Categories: ', categories)}
         {!categories ? 
           <div className="loading-wrapper">
             Loading all the goods
@@ -164,7 +212,7 @@ const Home = () => {
             <div className="total-line">
               <div className="total-word">Total:</div>
               <div className="total-amount">{amount === 0 ? null : amount === 1 ? `${amount} item` : `${amount} items` }</div>
-              <div className="total-price h-text-right">£{price.toFixed(2)}</div>
+              <div className="total-price h-text-right">£{parseFloat(price).toFixed(2)}</div>
             </div>
       
             <Link 
@@ -227,6 +275,7 @@ const Home = () => {
                       showPictureModal={(pic) => showPictureModal(pic)}
                       handleItemAdded={(prod) => handleItemAdded(prod)}
                       handleItemRemoved={(prod) => handleItemRemoved(prod)}
+                      out_of_stock={user.out_of_stock}
                     />
                   )
                 })}

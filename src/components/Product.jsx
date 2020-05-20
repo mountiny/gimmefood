@@ -9,7 +9,8 @@ const Product = ({
     price, 
     picture, 
     description_short,
-    stock, 
+    stock,
+    out_of_stock,
     onPictureClick, 
     onItemAdded, 
     onItemRemoved
@@ -18,19 +19,28 @@ const Product = ({
   const counter = useCounter(stock, inBasket)
 
   const handleFirstAddition = () => {
-    if (counter.value === 0) {
+    if (isOutOfStock()) return
+    if (counter.value === 0 && counter.value < stock) {
       counter.increase()
       addItem()
     }
   }
 
   const addItem = () => {
-    onItemAdded(product)
+    if (isOutOfStock()) return
+    if (counter.value < stock) {
+      onItemAdded(product)
+    }
   }
   const removeItem = () => {
+    if (isOutOfStock()) return
     if (counter.value !== 0) {
       onItemRemoved(product)
     }
+  }
+
+  const isOutOfStock = () => {
+    return stock === 0
   }
 
   return (
@@ -72,6 +82,13 @@ const Product = ({
             +
           </div>
       </div>
+      {stock === 0 &&
+        <div onClick={(e) => e.stopPropagation()} className='product-finished h-text-center h-700'>
+          <div>
+            {out_of_stock}
+          </div>
+        </div>
+      }
     </div>
   )
 

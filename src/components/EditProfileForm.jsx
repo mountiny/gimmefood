@@ -14,6 +14,8 @@ const EditProfileForm = ({
   const user_subheading = useField("subheading")
   const user_business_desc = useField("business_desc")
   const user_takeout_desc = useField("takeout_desc")
+  const user_out_of_stock = useField("out_of_stock")
+  const user_instagram = useField("instagram")
   const user_location = useField("location")
   const user_shop_button = useField("shop_button")
   const user_image = useImageField("image")
@@ -29,6 +31,8 @@ const EditProfileForm = ({
       user_subheading.setValue(userInfo.subheading ? userInfo.subheading : '')
       user_business_desc.setValue(userInfo.business_description ? userInfo.business_description : '')
       user_takeout_desc.setValue(userInfo.takeout_description ? userInfo.takeout_description : '')
+      user_out_of_stock.setValue(userInfo.out_of_stock ? userInfo.out_of_stock : '')
+      user_instagram.setValue(userInfo.instagram ? userInfo.instagram : '')
       user_location.setValue(userInfo.location ? userInfo.location : '')
       user_shop_button.setValue(userInfo.shop_button ? userInfo.shop_button : '')
       user_image.setValue(userInfo.image ? userInfo.image : '')
@@ -75,6 +79,8 @@ const EditProfileForm = ({
     data.append('subheading',  user_subheading.value)
     data.append('business_description',  user_business_desc.value)
     data.append('takeout_description',  user_takeout_desc.value)
+    data.append('out_of_stock',  user_out_of_stock.value)
+    data.append('instagram',  user_instagram.value)
     data.append('location', user_location.value)
     data.append('shop_button', user_shop_button.value)
     data.append('image',  user_image.value)
@@ -128,6 +134,28 @@ const EditProfileForm = ({
             className="h-rounded"
             value={user_takeout_desc.value}
             onChange={(e) =>user_takeout_desc.onChange(e)}
+          />
+        </div>
+        <div className="form-line">
+          <label htmlFor="out-of-stock">Text over product which is out of stock:</label>
+          <input
+            id="out-of-stock"
+            type="text"
+            placeholder="Unfortunately, we are out of stock 😢"
+            className="h-rounded"
+            value={user_out_of_stock.value}
+            onChange={(e) =>user_out_of_stock.onChange(e)}
+          />
+        </div>
+        <div className="form-line">
+          <label htmlFor="instagram-account">Link your Instagram account here:</label>
+          <input
+            id="instagram-account"
+            type="text"
+            placeholder="Link your Instagram account"
+            className="h-rounded"
+            value={user_instagram.value}
+            onChange={(e) =>user_instagram.onChange(e)}
           />
         </div>
         <div className="form-line">

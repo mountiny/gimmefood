@@ -20,6 +20,7 @@ const EditProfile = ({user, changeUser}) => {
   const getUserInfo = async () => {
     try {
       const response = await usersService.getInfo(user.token)
+      console.log('Response: ', response)
       setUserInfo(response)
     } catch (e) {
       console.log('Error: ', e)

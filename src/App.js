@@ -19,7 +19,7 @@ import {loadStripe} from '@stripe/stripe-js';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe('pk_live_aitrgN8xuZYpG1EPcB1BlHF4');
+const stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp');
 
 smoothscroll.polyfill();
 
@@ -51,7 +51,9 @@ const App = ({LSUser}) => {
 
   return (
     <userContext.Provider value={value}>
-      <Main/>
+      <Elements stripe={stripePromise}>
+        <Main/>
+      </Elements>
     </userContext.Provider>
   )
 
