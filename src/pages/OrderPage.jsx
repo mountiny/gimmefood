@@ -20,41 +20,41 @@ import { Elements } from '@stripe/react-stripe-js';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-var stripePromise = null;
+// var stripePromise = null;
 
-console.log('When od I rund')
+// console.log('When od I rund')
 
-const getAccountId = () => {
+// const getAccountId = () => {
    
-  let intent_slug = matchPath(window.location.pathname, {
-    path: "/:slug/order",
-    exact: true,
-    strict: false
-  })
+//   let intent_slug = matchPath(window.location.pathname, {
+//     path: "/:slug/order",
+//     exact: true,
+//     strict: false
+//   })
   
-  if (intent_slug) {
-    intent_slug = intent_slug.params
-  }
+//   if (intent_slug) {
+//     intent_slug = intent_slug.params
+//   }
   
-  if (intent_slug) {
-    console.log('intent: ', intent_slug)
+//   if (intent_slug) {
+//     console.log('intent: ', intent_slug)
   
-    stripeService.getAccontId(intent_slug).then((res) => {
-      console.log('Stripe id response: ', res)
-      stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp', 
-        { stripeAccount: res.stripe_id });
-    })
+//     stripeService.getAccontId(intent_slug).then((res) => {
+//       console.log('Stripe id response: ', res)
+//       stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp', 
+//         { stripeAccount: res.stripe_id });
+//     })
     
-  }
+//   }
 
-}
+// }
 
 const OrderPage = () => {
 
   // If the promise does not exist yet, call fucnction to creat ie
-  if (!stripePromise) {
-    getAccountId()
-  }
+  // if (!stripePromise) {
+  //   getAccountId()
+  // }
 
   const slug = useParams().business
   const LSBasketKey = `${slug}-basket`
@@ -338,7 +338,10 @@ const OrderPage = () => {
               <div className="form-line">
                 <label htmlFor="">Card details:</label>
                 {/* <CardElement className='h-rounded' options={CARD_OPTIONS} /> */}
-                <CardSection className="h-rounded" options={CARD_OPTIONS}/>
+                { stripe 
+                ? <CardSection className="h-rounded" options={CARD_OPTIONS}/> 
+                : <div>Connecting to payment gate...</div>}
+                
               </div>
               {/* <div className="form-line">
                 <label htmlFor="">Card details:</label>

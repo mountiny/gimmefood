@@ -1,13 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { CardElement, useStripe, useElements, PaymentRequestButtonElement } from '@stripe/react-stripe-js';
+import React, { useState, useEffect } from 'react'
 import '../assets/styles/main.scss'
-import { Redirect, useHistory, useParams, matchPath } from "react-router-dom"
+import { useParams, matchPath } from "react-router-dom"
 import stripeService from '../services/stripe'
-import db from '../../db.json'
 import { loadStripe } from '@stripe/stripe-js';
 
 // Hooks
-import useField from '../hooks/fieldHook'
 
 // Components
 
@@ -19,11 +16,8 @@ import { Elements } from '@stripe/react-stripe-js';
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-var stripePromise = null;
 
-console.log('When od I rund')
-
-const getAccountId = () => {
+const getAccountId = async () => {
    
   let intent_slug = matchPath(window.location.pathname, {
     path: "/:slug/order",
@@ -36,13 +30,14 @@ const getAccountId = () => {
   }
   
   if (intent_slug) {
-    console.log('intent: ', intent_slug)
+
   
-    stripeService.getAccontId(intent_slug).then((res) => {
-      console.log('Stripe id response: ', res)
-      stripePromise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp', 
-        { stripeAccount: res.stripe_id });
-    })
+    const res = await stripeService.getAccontId(intent_slug)
+
+    const promise = loadStripe('pk_test_Wbc2Nkrekp0GuKGTDmdMkZyp', { stripeAccount: res.stripe_id })
+
+    window.localStorage.setItem(`${intent_slug}-stripePromise`, JSON.stringify(promise))
+    return promise
     
   }
 
@@ -50,13 +45,21 @@ const getAccountId = () => {
 
 const OrderPageWrapper = () => {
 
+  const slug = useParams().business
+
+  const [promise, setPromise] = useState(window.localStorage.getItem(`${slug}-stripePromise`) ? JSON.parse(window.localStorage.getItem(`${slug}-stripePromise`)) : null)
+
   // If the promise does not exist yet, call fucnction to creat ie
-  if (!stripePromise) {
-    getAccountId()
-  }
+  useEffect(() => {
+    if (!promise) {
+      const newPromise = getAccountId()
+
+      setPromise(newPromise)
+    }
+  }, [])
 
   return (
-    <Elements stripe={stripePromise}>
+    <Elements stripe={promise}>
       <OrderPage />
     </Elements>
     )
